@@ -1,3 +1,7 @@
+# TweetNaCl is downloaded at compile time
+tweetnacl.h
+tweetnacl.c
+
 # Prerequisites
 *.d
 

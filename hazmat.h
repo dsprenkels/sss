@@ -15,20 +15,20 @@
 #include <inttypes.h>
 
 typedef struct {
-	const uint8_t x;
-	const uint8_t y[32];
+	uint8_t x;
+	uint8_t y[32];
 } SSS_Keyshare;
 
 
 void SSS_create_keyshares(SSS_Keyshare *out,
-                         const uint8_t key[32],
-                         uint8_t n,
-                         uint8_t k);
+                          const uint8_t key[32],
+                          uint8_t n,
+                          uint8_t k);
 
 
 void SSS_combine_keyshares(uint8_t key[32],
-                          const SSS_Keyshare *shares,
-			  uint8_t k);
+                           const SSS_Keyshare *shares,
+                           uint8_t k);
 
 
 #endif /* SSS_HAZMAT_H_ */

@@ -1,6 +1,7 @@
 #define _GNU_SOURCE
 
 #include "hazmat.h"
+#include <alloca.h>
 #include <assert.h>
 #include <stdio.h>
 #include <sys/syscall.h>
@@ -19,7 +20,7 @@ typedef struct {
 /*
  * Safely multiply two polynomials in GF(2^8)
  */
-static uint8_t _gf256_mul(uint8_t a, uint8_t b)
+static uint8_t gf256_mul(uint8_t a, uint8_t b)
 {
 	size_t idx;
 	uint8_t do_reduce, ret = 0;
@@ -38,16 +39,16 @@ static uint8_t _gf256_mul(uint8_t a, uint8_t b)
 /*
  * Invert `a` in GF(2^8)
  */
-static uint8_t _gf256_inv(uint8_t a)
+static uint8_t gf256_inv(uint8_t a)
 {
 	size_t idx;
 	uint8_t ret = a;
 	/* Use square-multiply to calculate a^254 */
 	for (idx = 0; idx < 6; idx++) {
-		ret = _gf256_mul(ret, ret);
-		ret = _gf256_mul(ret, a);
+		ret = gf256_mul(ret, ret);
+		ret = gf256_mul(ret, a);
 	}
-	ret = _gf256_mul(ret, ret);
+	ret = gf256_mul(ret, ret);
 	return ret;
 }
 
@@ -55,9 +56,9 @@ static uint8_t _gf256_inv(uint8_t a)
 /*
  * Create the ByteShares for one secret byte
  */
-static int create_byte_share(ByteShare *out,
-                           uint8_t secret,
-                           uint8_t n, uint8_t k)
+static int create_byte_shares(ByteShare *out,
+                             uint8_t secret,
+                             uint8_t n, uint8_t k)
 {
 	uint8_t poly[256] = { 0 }, x, y, xpow;
 	size_t point_idx, coeff_idx;
@@ -75,19 +76,14 @@ static int create_byte_share(ByteShare *out,
 	/* Set the secret value in the polynomial */
 	poly[255] = secret;
 
-	for (coeff_idx = 0; coeff_idx < 256; coeff_idx++) {
-		printf("%02hhx", poly[coeff_idx]);
-	}
-	printf("\n");
-
 	/* Generate some points for x = 1..n that are on the polynomial */
 	for (point_idx = 0; point_idx < n; point_idx++) {
 		x = point_idx + 1;
 		y = 0;
 		xpow = 1;
 		for (coeff_idx = 0; coeff_idx < k; coeff_idx++) {
-			y ^= _gf256_mul(xpow, poly[255 - coeff_idx]);
-			xpow = _gf256_mul(xpow, x);
+			y ^= gf256_mul(xpow, poly[255 - coeff_idx]);
+			xpow = gf256_mul(xpow, x);
 		}
 		out[point_idx].x = x;
 		out[point_idx].y = y;
@@ -99,7 +95,7 @@ static int create_byte_share(ByteShare *out,
 /*
  * Restore a secret byte from `k` bytes shares in `shares`
  */
-static uint8_t combine_byte_share(const ByteShare *shares, const uint8_t k)
+static uint8_t combine_byte_shares(const ByteShare *shares, const uint8_t k)
 {
 	/* Restore the least significant coefficient in the original poly */
 	size_t idx1, idx2;
@@ -111,12 +107,63 @@ static uint8_t combine_byte_share(const ByteShare *shares, const uint8_t k)
 		denom = 1;
 		for (idx2 = 0; idx2 < k; idx2++) {
 			if (idx1 == idx2) continue;
-			num = _gf256_mul(num, shares[idx2].x);
-			denom = _gf256_mul(denom, shares[idx1].x ^ shares[idx2].x);
+			num = gf256_mul(num, shares[idx2].x);
+			denom = gf256_mul(denom, shares[idx1].x ^ shares[idx2].x);
 		}
-		basis_poly = _gf256_mul(num, _gf256_inv(denom));
+		basis_poly = gf256_mul(num, gf256_inv(denom));
 		/* Add scaled polynomial coefficient to restored secret */
-		secret ^= _gf256_mul(shares[idx1].y, basis_poly);
+		secret ^= gf256_mul(shares[idx1].y, basis_poly);
 	}
 	return secret;
+}
+
+
+/*
+ * Create `k` key shares of the key given in `key`. The caller has to ensure that
+ * the array `out` has enough space to hold at least `n` SSS_Keyshare structs.
+ */
+ void SSS_create_keyshares(SSS_Keyshare *out,
+                           const uint8_t key[32],
+                           uint8_t n,
+                           uint8_t k)
+{
+	size_t byte_idx, share_idx;
+	uint8_t x;
+	ByteShare *byte_shares = alloca(n * sizeof(ByteShare));
+
+	for (share_idx = 0; share_idx < n; share_idx++) {
+		x = share_idx + 1;
+		out[share_idx].x = x;
+	}
+
+	for (byte_idx = 0; byte_idx < 32; byte_idx++) {
+		create_byte_shares(byte_shares, key[byte_idx], n, k);
+		for (share_idx = 0; share_idx < n; share_idx++) {
+			assert(out[share_idx].x == byte_shares[share_idx].x);
+			out[share_idx].y[byte_idx] = byte_shares[share_idx].y;
+		}
+	}
+}
+
+/*
+ * Restore the `k` SSS_Keyshare structs given in `shares` and write the result
+ * to `key`.
+ */
+ void SSS_combine_keyshares(uint8_t key[32],
+                            const SSS_Keyshare *key_shares,
+                            uint8_t k)
+{
+	size_t byte_idx, share_idx;
+	ByteShare *byte_shares = alloca(k * sizeof(ByteShare));
+
+	for (share_idx = 0; share_idx < k; share_idx++) {
+		byte_shares[share_idx].x = key_shares[share_idx].x;
+	}
+
+	for (byte_idx = 0; byte_idx < 32; byte_idx++) {
+		for (share_idx = 0; share_idx < k; share_idx++) {
+			byte_shares[share_idx].y = key_shares[share_idx].y[byte_idx];
+		}
+		key[byte_idx] = combine_byte_shares(byte_shares, k);
+	}
 }
