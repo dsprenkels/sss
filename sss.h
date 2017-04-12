@@ -27,7 +27,7 @@ Length of the message (must be known at compile-time)
 
 /*
  * One share of a secret which is shared using Shamir's
- * the `SSS_CreateShares` function.
+ * the `SSS_create_shares` function.
  */
 typedef struct {
 	SSS_Keyshare keyshare;

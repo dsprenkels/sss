@@ -14,18 +14,52 @@
 
 #include <inttypes.h>
 
+/*
+ * One share of a cryptographic key which is shared using Shamir's
+ * the `SSS_create_keyshares` function.
+ */
 typedef struct {
 	uint8_t x;
 	uint8_t y[32];
 } SSS_Keyshare;
 
-
+/*
+ * Share the secret given in `key` into `n` shares with a treshold value given
+ * in `k`. The resulting shares are written to `out`.
+ *
+ * The share generation that is done in this function is only secure if the key
+ * that is given is indeed a cryptographic key. This means that it should be
+ * randomly and uniformly generated string of 32 bytes.
+ *
+ * Also, for performance reasons, this function assumes that both `n` and `k`
+ * are *public* values.
+ *
+ * If you are looking for a function that *just* creates shares of arbitrary
+ * data, you should use the `SSS_create_shares` function in `sss.h`.
+ */
 void SSS_create_keyshares(SSS_Keyshare *out,
                           const uint8_t key[32],
                           uint8_t n,
                           uint8_t k);
 
 
+/*
+ * Combine the `k` shares provided in `shares` and write the resulting key to
+ * `key`. The amount of shares used to restore a secret may be larger than the
+ * threshold needed to restore them.
+ *
+ * This function does *not* do *any* checking for integrity. If any of the
+ * shares not original, this will result in an invalid resored value.
+ * All values written to `key` should be treated as secret. Even if some of the
+ * shares that were provided as input were incorrect, the resulting key *still*
+ * allows an attacker to gain information about the real key.
+ *
+ * This function treats `shares` and `key` as secret values. `k` is treated as
+ * a public value (for performance reasons).
+ *
+ * If you are looking for a function that combines shares of arbitrary
+ * data, you should use the `SSS_combine_shares` function in `sss.h`.
+ */
 void SSS_combine_keyshares(uint8_t key[32],
                            const SSS_Keyshare *shares,
                            uint8_t k);
