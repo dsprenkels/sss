@@ -5,7 +5,6 @@
 #include <assert.h>
 #include <stdio.h>
 #include <sys/syscall.h>
-#include <linux/random.h>
 #include <unistd.h>
 
 
