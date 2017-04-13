@@ -149,7 +149,7 @@ static uint8_t combine_byte_shares(const ByteShare *shares, const uint8_t k)
                             uint8_t k)
 {
 	size_t byte_idx, share_idx;
-	ByteShare *byte_shares = alloca(k * sizeof(ByteShare));
+	ByteShare byte_shares[k * sizeof(ByteShare)];
 
 	for (share_idx = 0; share_idx < k; share_idx++) {
 		byte_shares[share_idx].x = key_shares[share_idx].x;

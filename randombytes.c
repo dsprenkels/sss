@@ -7,7 +7,7 @@
 #endif
 
 
-void randombytes(void *buf, const size_t n)
+void randombytes(const void *buf, const size_t n)
 {
 	int tmp;
 #ifdef __linux__
