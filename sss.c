@@ -22,50 +22,50 @@
 static const unsigned char nonce[crypto_secretbox_NONCEBYTES] = { 0 };
 
 
-void SSS_create_shares(SSS_Share *out, const unsigned char *data,
+void sss_create_shares(sss_Share *out, const unsigned char *data,
 	               uint8_t n, uint8_t k)
 {
 	const unsigned char key[crypto_secretbox_KEYBYTES];
-	unsigned char m[crypto_secretbox_ZEROBYTES + SSS_MLEN] = { 0 };
+	unsigned char m[crypto_secretbox_ZEROBYTES + sss_MLEN] = { 0 };
 	unsigned long long mlen = sizeof(m); /* length includes zero-bytes */
 	unsigned char c[mlen];
 	int tmp;
-	SSS_Keyshare keyshares[n];
+	sss_Keyshare keyshares[n];
 	size_t idx;
 
 	/* Generate a random key */
 	randombytes(key, crypto_secretbox_KEYBYTES);
 
 	/* AEAD encrypt the data with the key */
-	memcpy(&m[crypto_secretbox_ZEROBYTES], data, SSS_MLEN);
+	memcpy(&m[crypto_secretbox_ZEROBYTES], data, sss_MLEN);
 	tmp = crypto_secretbox(c, m, mlen, nonce, key);
 	assert(tmp == 0); /* should always happen */
 
 	/* Generate KeyShares */
-	SSS_create_keyshares(keyshares, key, n, k);
+	sss_create_keyshares(keyshares, key, n, k);
 
 	/* Build regular shares */
 	for (idx = 0; idx < n; idx++) {
 		out[idx].keyshare = keyshares[idx];
-		memcpy(out[idx].c, &c[crypto_secretbox_BOXZEROBYTES], SSS_CLEN);
+		memcpy(out[idx].c, &c[crypto_secretbox_BOXZEROBYTES], sss_CLEN);
 	}
 }
 
 
-int SSS_combine_shares(uint8_t *data, const SSS_Share *shares, uint8_t k)
+int sss_combine_shares(uint8_t *data, const sss_Share *shares, uint8_t k)
 {
 	unsigned char key[crypto_secretbox_KEYBYTES];
-	unsigned char c[crypto_secretbox_BOXZEROBYTES + SSS_CLEN] = { 0 };
+	unsigned char c[crypto_secretbox_BOXZEROBYTES + sss_CLEN] = { 0 };
 	unsigned long long clen = sizeof(c);
 	unsigned char m[clen];
-	SSS_Keyshare keyshares[k];
+	sss_Keyshare keyshares[k];
 	size_t idx;
 	int ret = 0;
 
 	/* Check if all ciphertexts are the same */
 	if (k < 1) return -1;
 	for (idx = 1; idx < k; idx++) {
-		if (memcmp(shares[0].c, shares[idx].c, SSS_CLEN) != 0) {
+		if (memcmp(shares[0].c, shares[idx].c, sss_CLEN) != 0) {
 			return -1;
 		}
 	}
@@ -74,12 +74,12 @@ int SSS_combine_shares(uint8_t *data, const SSS_Share *shares, uint8_t k)
 	for (idx = 0; idx < k; idx++) {
 		keyshares[idx] = shares[idx].keyshare;
 	}
-	SSS_combine_keyshares(key, keyshares, k);
+	sss_combine_keyshares(key, keyshares, k);
 
 	/* Decrypt the ciphertext */
-	memcpy(&c[crypto_secretbox_BOXZEROBYTES], shares[0].c, SSS_CLEN);
+	memcpy(&c[crypto_secretbox_BOXZEROBYTES], shares[0].c, sss_CLEN);
 	ret |= crypto_secretbox_open(m, c, clen, nonce, key);
-	memcpy(data, &m[crypto_secretbox_ZEROBYTES], SSS_MLEN);
+	memcpy(data, &m[crypto_secretbox_ZEROBYTES], sss_MLEN);
 
 	return ret;
 }

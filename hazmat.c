@@ -115,9 +115,9 @@ static uint8_t combine_byte_shares(const ByteShare *shares, const uint8_t k)
 
 /*
  * Create `k` key shares of the key given in `key`. The caller has to ensure that
- * the array `out` has enough space to hold at least `n` SSS_Keyshare structs.
+ * the array `out` has enough space to hold at least `n` sss_Keyshare structs.
  */
- void SSS_create_keyshares(SSS_Keyshare *out,
+ void sss_create_keyshares(sss_Keyshare *out,
                            const uint8_t key[32],
                            uint8_t n,
                            uint8_t k)
@@ -141,11 +141,11 @@ static uint8_t combine_byte_shares(const ByteShare *shares, const uint8_t k)
 }
 
 /*
- * Restore the `k` SSS_Keyshare structs given in `shares` and write the result
+ * Restore the `k` sss_Keyshare structs given in `shares` and write the result
  * to `key`.
  */
- void SSS_combine_keyshares(uint8_t key[32],
-                            const SSS_Keyshare *key_shares,
+ void sss_combine_keyshares(uint8_t key[32],
+                            const sss_Keyshare *key_shares,
                             uint8_t k)
 {
 	size_t byte_idx, share_idx;

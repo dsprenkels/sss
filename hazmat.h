@@ -9,20 +9,20 @@
  */
 
 
-#ifndef SSS_HAZMAT_H_
-#define SSS_HAZMAT_H_
+#ifndef sss_HAZMAT_H_
+#define sss_HAZMAT_H_
 
 #include <inttypes.h>
 
 
 /*
  * One share of a cryptographic key which is shared using Shamir's
- * the `SSS_create_keyshares` function.
+ * the `sss_create_keyshares` function.
  */
 typedef struct {
 	uint8_t x;
 	uint8_t y[32];
-} SSS_Keyshare;
+} sss_Keyshare;
 
 
 /*
@@ -37,9 +37,9 @@ typedef struct {
  * are *public* values.
  *
  * If you are looking for a function that *just* creates shares of arbitrary
- * data, you should use the `SSS_create_shares` function in `sss.h`.
+ * data, you should use the `sss_create_shares` function in `sss.h`.
  */
-void SSS_create_keyshares(SSS_Keyshare *out,
+void sss_create_keyshares(sss_Keyshare *out,
                           const uint8_t key[32],
                           uint8_t n,
                           uint8_t k);
@@ -60,11 +60,11 @@ void SSS_create_keyshares(SSS_Keyshare *out,
  * a public value (for performance reasons).
  *
  * If you are looking for a function that combines shares of arbitrary
- * data, you should use the `SSS_combine_shares` function in `sss.h`.
+ * data, you should use the `sss_combine_shares` function in `sss.h`.
  */
-void SSS_combine_keyshares(uint8_t key[32],
-                           const SSS_Keyshare *shares,
+void sss_combine_keyshares(uint8_t key[32],
+                           const sss_Keyshare *shares,
                            uint8_t k);
 
 
-#endif /* SSS_HAZMAT_H_ */
+#endif /* sss_HAZMAT_H_ */

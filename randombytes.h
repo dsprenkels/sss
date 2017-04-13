@@ -1,5 +1,5 @@
-#ifndef SSS_RANDOMBYTES_H
-#define SSS_RANDOMBYTES_H
+#ifndef sss_RANDOMBYTES_H
+#define sss_RANDOMBYTES_H
 
 #include <sys/syscall.h>
 #include <unistd.h>
@@ -11,4 +11,4 @@
 void randombytes(const void *buf, size_t n);
 
 
-#endif /* SSS_RANDOMBYTES_H */
+#endif /* sss_RANDOMBYTES_H */

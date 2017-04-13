@@ -4,36 +4,36 @@
  */
 
 
-#ifndef SSS_SSS_H_
-#define SSS_SSS_H_
+#ifndef sss_SSS_H_
+#define sss_SSS_H_
 
 #include "hazmat.h"
 #include "tweetnacl.h"
 #include <inttypes.h>
 
 
-#ifndef SSS_MLEN
+#ifndef sss_MLEN
 /*
 Length of the message (must be known at compile-time)
 */
-#define SSS_MLEN sizeof(uint8_t[64])
+#define sss_MLEN sizeof(uint8_t[64])
 #endif
 
 
 /*
  * Length of the ciphertext, including the message authentication code
  */
-#define SSS_CLEN (SSS_MLEN + 16)
+#define sss_CLEN (sss_MLEN + 16)
 
 
 /*
  * One share of a secret which is shared using Shamir's
- * the `SSS_create_shares` function.
+ * the `sss_create_shares` function.
  */
 typedef struct {
-	SSS_Keyshare keyshare;
-	unsigned char c[SSS_CLEN];
-} SSS_Share;
+	sss_Keyshare keyshare;
+	unsigned char c[sss_CLEN];
+} sss_Share;
 
 
 /*
@@ -42,9 +42,9 @@ typedef struct {
  *
  * This function will put the resulting shares in the array pointed to by
  * `out`. The caller has to guarantee that this array will fit at least `n`
- * instances of `SSS_Share`.
+ * instances of `sss_Share`.
  */
-void SSS_create_shares(SSS_Share *out,
+void sss_create_shares(sss_Share *out,
                        const uint8_t *data,
                        uint8_t n,
                        uint8_t k);
@@ -53,15 +53,15 @@ void SSS_create_shares(SSS_Share *out,
 /*
  * Combine the `k` shares pointed to by `shares` and put the resulting secret
  * data in `data`. The caller has to ensure that the `data` array will fit
- * at least `SSS_MLEN` (default: 64) bytes.
+ * at least `sss_MLEN` (default: 64) bytes.
  *
  * On success, this function will return 0. If combining the secret fails,
  * this function will return a nonzero return code. On failure, the value
  * in `data` may have been altered, but must still be considered secret.
  */
-int SSS_combine_shares(uint8_t *data,
-                       const SSS_Share *shares,
+int sss_combine_shares(uint8_t *data,
+                       const sss_Share *shares,
                        uint8_t k);
 
 
-#endif /* SSS_SSS_H_ */
+#endif /* sss_SSS_H_ */
