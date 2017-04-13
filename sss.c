@@ -45,17 +45,15 @@ void SSS_create_shares(SSS_Share *out, const unsigned char *data,
 	SSS_create_keyshares(keyshares, key, n, k);
 
 	/* Build regular shares */
-	for (idx = 0; idx < mlen; idx++) {
+	for (idx = 0; idx < n; idx++) {
 		out[idx].keyshare = keyshares[idx];
-		memcpy(out[idx].c, &c[crypto_secretbox_BOXZEROBYTES], SSS_MLEN);
+		memcpy(out[idx].c, &c[crypto_secretbox_BOXZEROBYTES], SSS_CLEN);
 	}
 }
 
 
 int SSS_combine_shares(uint8_t *data, const SSS_Share *shares, uint8_t k)
 {
-	/* int crypto_secretbox_open(u8 *m,const u8 *c,u64 mlen,const u8 *nonce,const 	u8 *key) */
-
 	unsigned char key[crypto_secretbox_KEYBYTES];
 	unsigned char c[crypto_secretbox_BOXZEROBYTES + SSS_CLEN] = { 0 };
 	unsigned long long clen = sizeof(c);

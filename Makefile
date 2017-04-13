@@ -9,9 +9,12 @@ libsss.a: $(OBJS)
 
 %.out: %.o
 	$(CC) -o $@ $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS)
-	./$@
+	valgrind -q --leak-check=full --error-exitcode=1 ./$@
 
-test: test_hazmat.out
+test_sss.out: $(OBJS)
+
+.PHONY: test
+test: test_hazmat.out test_sss.out
 
 .PHONY: clean
 clean:

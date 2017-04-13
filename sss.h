@@ -23,7 +23,7 @@ Length of the message (must be known at compile-time)
 /*
  * Length of the ciphertext, including the message authentication code
  */
-#define SSS_CLEN (crypto_secretbox_ZEROBYTES + SSS_MLEN - crypto_secretbox_BOXZEROBYTES)
+#define SSS_CLEN (SSS_MLEN + 16)
 
 
 /*
@@ -32,7 +32,7 @@ Length of the message (must be known at compile-time)
  */
 typedef struct {
 	SSS_Keyshare keyshare;
-	unsigned char c[SSS_MLEN];
+	unsigned char c[SSS_CLEN];
 } SSS_Share;
 
 
