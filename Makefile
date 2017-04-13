@@ -1,5 +1,5 @@
 CFLAGS = -Wall -g -O2 -pedantic
-SRCS = sss.c hazmat.c tweetnacl.c
+SRCS = hazmat.c randombytes.c sss.c tweetnacl.c
 OBJS := ${SRCS:.c=.o}
 
 all: libsss.a

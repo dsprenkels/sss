@@ -1,11 +1,8 @@
-#define _GNU_SOURCE
-
 #include "hazmat.h"
+#include "randombytes.h"
 #include <alloca.h>
 #include <assert.h>
 #include <stdio.h>
-#include <sys/syscall.h>
-#include <unistd.h>
 
 
 /* Use Rijndael polynomial to reduce values in GF(2^8) */
@@ -62,7 +59,6 @@ static int create_byte_shares(ByteShare *out,
 {
 	uint8_t poly[256] = { 0 }, x, y, xpow;
 	size_t point_idx, coeff_idx;
-	int tmp;
 
 	/* Check if the parameters are valid */
 	if (n == 0) return -1;
@@ -70,8 +66,7 @@ static int create_byte_shares(ByteShare *out,
 	if (k > n) return -1;
 
 	/* Create a random polynomial of order k */
-	tmp = syscall(SYS_getrandom, &poly[255 - k], k, 0);
-	assert(tmp == k); /* Failure indicates a bug in the code */
+	randombytes(&poly[255 - k], k);
 
 	/* Set the secret value in the polynomial */
 	poly[255] = secret;

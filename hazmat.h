@@ -14,6 +14,7 @@
 
 #include <inttypes.h>
 
+
 /*
  * One share of a cryptographic key which is shared using Shamir's
  * the `SSS_create_keyshares` function.
@@ -22,6 +23,7 @@ typedef struct {
 	uint8_t x;
 	uint8_t y[32];
 } SSS_Keyshare;
+
 
 /*
  * Share the secret given in `key` into `n` shares with a treshold value given
