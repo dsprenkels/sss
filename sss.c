@@ -2,9 +2,7 @@
 #include "tweetnacl.h"
 #include "sss.h"
 #include <assert.h>
-#include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 /*
  * These assertions may be considered overkill, but would if the tweetnacl API

@@ -1,8 +1,6 @@
 #include "hazmat.h"
 #include "randombytes.h"
-#include <alloca.h>
 #include <assert.h>
-#include <stdio.h>
 
 
 /* Use Rijndael polynomial to reduce values in GF(2^8) */
@@ -124,7 +122,7 @@ static uint8_t combine_byte_shares(const ByteShare *shares, const uint8_t k)
 {
 	size_t byte_idx, share_idx;
 	uint8_t x;
-	ByteShare *byte_shares = alloca(n * sizeof(ByteShare));
+	ByteShare byte_shares[n * sizeof(ByteShare)];
 
 	for (share_idx = 0; share_idx < n; share_idx++) {
 		x = share_idx + 1;
