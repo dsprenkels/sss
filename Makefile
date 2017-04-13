@@ -8,7 +8,7 @@ libsss.a: $(OBJS)
 	$(AR) -rcs libsss.a $^
 
 %.out: %.o
-	$(CC) -o $@ $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS)
+	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS)
 	valgrind -q --leak-check=full --error-exitcode=1 ./$@
 
 test_sss.out: $(OBJS)
