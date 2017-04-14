@@ -47,7 +47,8 @@ typedef struct {
 void sss_create_shares(sss_Share *out,
                        const uint8_t *data,
                        uint8_t n,
-                       uint8_t k);
+                       uint8_t k,
+                       const uint8_t random_bytes[32]);
 
 
 /*

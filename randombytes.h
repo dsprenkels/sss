@@ -8,7 +8,7 @@
 /*
  * Write `n` bytes of high quality random bytes to `buf`
  */
-void randombytes(const void *buf, size_t n);
+void randombytes(void *buf, size_t n);
 
 
 #endif /* sss_RANDOMBYTES_H */

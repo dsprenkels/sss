@@ -1,5 +1,4 @@
 #include "hazmat.c"
-#include "randombytes.c"
 #include <assert.h>
 #include <string.h>
 

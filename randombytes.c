@@ -1,5 +1,6 @@
 #include "randombytes.h"
 #include <assert.h>
+#include <string.h>
 
 #ifdef __linux__
 # define _GNU_SOURCE
@@ -7,13 +8,13 @@
 #endif
 
 
-void randombytes(const void *buf, const size_t n)
+void randombytes(void *buf, const size_t n)
 {
-	int tmp;
-#ifdef __linux__
-	tmp = syscall(SYS_getrandom, buf, n, 0);
-#else
-# error "randombytes not supported on this platform"
-#endif /* __linux__ */
+#ifdef __linux_
+	int tmp = syscall(SYS_getrandom, buf, n, 0);
 	assert(tmp == n); /* Failure indicates a bug in the code */
+#else
+# warning "randombytes is not supported on this platform. using INSECURE dummy version"
+	memset(buf, 42, n);
+#endif /* __linux__ */
 }
