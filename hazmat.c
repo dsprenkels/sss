@@ -59,7 +59,7 @@ static uint8_t gf256_inv(uint8_t a)
 static int create_byte_shares(ByteShare *out,
                              uint8_t secret,
                              uint8_t n, uint8_t k,
-                             uint8_t random_bytes[256])
+                             uint8_t *random_bytes)
 {
 	uint8_t poly[256] = { 0 }, x, y, xpow;
 	size_t point_idx, coeff_idx;
@@ -70,7 +70,7 @@ static int create_byte_shares(ByteShare *out,
 	if (k > n) return -1;
 
 	/* Create a random polynomial of order k */
-	memcpy(&poly[255 - k], &random_bytes[255 - k], k);
+	memcpy(&poly[255 - k], random_bytes, k);
 
 	/* Set the secret value in the polynomial */
 	poly[255] = secret;
@@ -129,7 +129,7 @@ static uint8_t combine_byte_shares(const ByteShare *shares, const uint8_t k)
 	size_t byte_idx, share_idx;
 	uint8_t x;
 	ByteShare byte_shares[n * sizeof(ByteShare)];
-	uint8_t random_bytes[256*256];
+	uint8_t random_bytes[k * 256];
 
 	/* Generate a lot of random bytes */
 	FIPS202_SHAKE256(key, 32, random_bytes, sizeof(random_bytes));
@@ -141,7 +141,7 @@ static uint8_t combine_byte_shares(const ByteShare *shares, const uint8_t k)
 
 	for (byte_idx = 0; byte_idx < 32; byte_idx++) {
 		create_byte_shares(byte_shares, key[byte_idx], n, k,
-		                   &random_bytes[byte_idx*256]);
+		                   &random_bytes[byte_idx * k]);
 		for (share_idx = 0; share_idx < n; share_idx++) {
 			assert(out[share_idx].x == byte_shares[share_idx].x);
 			out[share_idx].y[byte_idx] = byte_shares[share_idx].y;
