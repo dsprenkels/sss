@@ -14,7 +14,7 @@ void randombytes(void *buf, const size_t n)
 	int tmp = syscall(SYS_getrandom, buf, n, 0);
 	assert(tmp == n); /* Failure indicates a bug in the code */
 #else
-# warning "randombytes is not supported on this platform. using INSECURE dummy version"
+# warning "randombytes(...) is not supported on this platform. Using INSECURE dummy version."
 	memset(buf, 42, n);
 #endif /* __linux__ */
 }
