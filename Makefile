@@ -9,7 +9,7 @@ libsss.a: $(OBJS)
 
 %.out: %.o
 	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS)
-	valgrind -q --leak-check=full --error-exitcode=1 ./$@
+	$(MEMCHECK) ./$@
 
 test_sss.out: $(OBJS)
 test_hazmat.out: $(filter-out hazmat.o,$(OBJS))
