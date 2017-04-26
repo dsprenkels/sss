@@ -1,5 +1,5 @@
 CFLAGS = -Wall -g -O2
-SRCS = hazmat.c randombytes.c sss.c keccak.c tweetnacl.c
+SRCS = hazmat.c randombytes.c serialize.c sss.c keccak.c tweetnacl.c
 OBJS := ${SRCS:.c=.o}
 
 all: libsss.a
@@ -11,11 +11,12 @@ libsss.a: $(OBJS)
 	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS)
 	valgrind -q --leak-check=full --error-exitcode=1 ./$@
 
-test_sss.out: $(OBJS)
 test_hazmat.out: $(filter-out hazmat.o,$(OBJS))
+test_sss.out: $(OBJS)
+test_serialize.out: $(OBJS)
 
 .PHONY: test
-test: test_hazmat.out test_sss.out
+test: test_hazmat.out test_serialize.out test_sss.out
 
 .PHONY: clean
 clean:
