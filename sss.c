@@ -1,5 +1,6 @@
-#include "tweetnacl.h"
+#include "randombytes.h"
 #include "sss.h"
+#include "tweetnacl.h"
 #include <assert.h>
 #include <string.h>
 
@@ -20,14 +21,18 @@ static const unsigned char nonce[crypto_secretbox_NONCEBYTES] = { 0 };
 
 
 void sss_create_shares(sss_Share *out, const unsigned char *data,
-	               uint8_t n, uint8_t k, const unsigned char key[32])
+                       uint8_t n, uint8_t k)
 {
+	unsigned char key[32];
 	unsigned char m[crypto_secretbox_ZEROBYTES + sss_MLEN] = { 0 };
 	unsigned long long mlen = sizeof(m); /* length includes zero-bytes */
 	unsigned char c[mlen];
 	int tmp;
 	sss_Keyshare keyshares[n];
 	size_t idx;
+
+	/* Generate a random encryption key */
+	randombytes(key, sizeof(key));
 
 	/* AEAD encrypt the data with the key */
 	memcpy(&m[crypto_secretbox_ZEROBYTES], data, sss_MLEN);

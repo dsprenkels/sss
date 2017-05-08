@@ -1,5 +1,5 @@
 #include "hazmat.h"
-#include "tweetnacl.h"
+#include "randombytes.h"
 #include <assert.h>
 #include <string.h>
 
@@ -14,7 +14,7 @@ typedef struct {
 
 
 extern void FIPS202_SHAKE256(const unsigned char *in, unsigned long long inLen,
-	                     unsigned char *out, unsigned long long outLen);
+                             unsigned char *out, unsigned long long outLen);
 
 
 /*
