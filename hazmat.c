@@ -23,13 +23,13 @@ extern void FIPS202_SHAKE256(const unsigned char *in, unsigned long long inLen,
 static uint8_t gf256_mul(uint8_t a, uint8_t b)
 {
 	size_t idx;
-	uint8_t do_reduce, ret = 0;
+	uint8_t reduc_mask, ret = 0;
 
 	for (idx = 0; idx < 8; idx++) {
 		ret ^= (b & 1) * a;
-		do_reduce = a >> 7;
+		reduc_mask = ((int8_t) a) >> 7;
 		a <<= 1;
-		a ^= do_reduce * REDUCE_POLY;
+		a ^= reduc_mask & REDUCE_POLY;
 		b >>= 1;
 	}
 	return ret;
