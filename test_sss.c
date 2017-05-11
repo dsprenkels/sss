@@ -32,11 +32,5 @@ int main()
 	assert(tmp == 0);
 	assert(memcmp(restored, data, sss_MLEN) == 0);
 
-	/* Weird inputs */
-	sss_create_shares(shares, data, 0, 0, key);
-	tmp = sss_combine_shares(restored, shares, 0);
-	assert(tmp == -1);
-	assert(memcmp(restored, data, sss_MLEN) == 0);
-
 	return 0;
 }
