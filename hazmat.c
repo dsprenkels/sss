@@ -86,18 +86,16 @@ gf256_mul(uint32_t r[8], const uint32_t a[8], const uint32_t b[8])
 	 * loops. So we will just have to do this by hand.
 	 */
 	uint32_t a2[8];
-
 	memcpy(a2, a, sizeof(uint32_t[8]));
-	memset(r, 0, sizeof(uint32_t[8]));
 
-	r[0] ^= a2[0] & b[0]; /* add */
-	r[1] ^= a2[1] & b[0];
-	r[2] ^= a2[2] & b[0];
-	r[3] ^= a2[3] & b[0];
-	r[4] ^= a2[4] & b[0];
-	r[5] ^= a2[5] & b[0];
-	r[6] ^= a2[6] & b[0];
-	r[7] ^= a2[7] & b[0];
+	r[0] = a2[0] & b[0]; /* add (assignment, because r is 0) */
+	r[1] = a2[1] & b[0];
+	r[2] = a2[2] & b[0];
+	r[3] = a2[3] & b[0];
+	r[4] = a2[4] & b[0];
+	r[5] = a2[5] & b[0];
+	r[6] = a2[6] & b[0];
+	r[7] = a2[7] & b[0];
 	a2[0] ^= a2[7]; /* reduce */
 	a2[2] ^= a2[7];
 	a2[3] ^= a2[7];
