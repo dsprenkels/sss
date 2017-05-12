@@ -1,4 +1,4 @@
-CFLAGS = -Wall -g -O2
+CFLAGS = -Wall -g -O3
 SRCS = hazmat.c randombytes.c serialize.c sss.c keccak.c tweetnacl.c
 OBJS := ${SRCS:.c=.o}
 

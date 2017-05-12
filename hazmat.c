@@ -1,7 +1,28 @@
+/*
+ * Implementation of the hazardous parts of the SSS library
+ *
+ * Author: Daan Sprenkels <hello@dsprenkels.com>
+ *
+ * This code contains the actual Shamir secret sharing functionality. The
+ * implementation of this code is based on the idea that the user likes to
+ * generate/combine 32 shares (in GF(2^8) at the same time, because a 256 bit
+ * key will be exactly 32 bytes. Therefore we bitslice all the input and
+ * unbitslice the output right before returning.
+ *
+ * This bitslice approach optimizes natively on all architectures that are 32
+ * bit or more. Care is taken to use not too many registers, to ensure that no
+ * values have to be leaked to the stack.
+ *
+ * All functions in this module are implemented constant time and constant
+ * lookup operations, as all proper crypto code must be.
+ */
+
+
 #include "hazmat.h"
 #include "tweetnacl.h"
 #include <assert.h>
 #include <string.h>
+
 
 typedef struct {
 	uint8_t x;
