@@ -64,7 +64,9 @@ static void gf256_add(uint32_t r[8], const uint32_t x[8])
 
 /*
  * Safely multiply two bitsliced polynomials in GF(2^8) reduced by
- * x^8 + x^4 + x^3 + x + 1.
+ * x^8 + x^4 + x^3 + x + 1. `r` and `a` may overlap, but overlapping of `r`
+ * and `b` will produce an incorrect result! If you need to square a polynomial
+ * use `gf256_square` instead.
  */
 static void gf256_mul(uint32_t r[8], const uint32_t a[8], const uint32_t b[8])
 {
@@ -77,104 +79,147 @@ static void gf256_mul(uint32_t r[8], const uint32_t a[8], const uint32_t b[8])
 	 * However, some compilers seem to fail in optimizing these kinds of
 	 * loops. So we will just have to do this by hand.
 	 */
-	uint32_t a2[8], b2[8];
+	uint32_t a2[8];
 
 	memcpy(a2, a, sizeof(uint32_t[8]));
-	memcpy(b2, b, sizeof(uint32_t[8]));
 	memset(r, 0, sizeof(uint32_t[8]));
 
-	r[0] ^= a2[0] & b2[0]; /* add */
-	r[1] ^= a2[1] & b2[0];
-	r[2] ^= a2[2] & b2[0];
-	r[3] ^= a2[3] & b2[0];
-	r[4] ^= a2[4] & b2[0];
-	r[5] ^= a2[5] & b2[0];
-	r[6] ^= a2[6] & b2[0];
-	r[7] ^= a2[7] & b2[0];
+	r[0] ^= a2[0] & b[0]; /* add */
+	r[1] ^= a2[1] & b[0];
+	r[2] ^= a2[2] & b[0];
+	r[3] ^= a2[3] & b[0];
+	r[4] ^= a2[4] & b[0];
+	r[5] ^= a2[5] & b[0];
+	r[6] ^= a2[6] & b[0];
+	r[7] ^= a2[7] & b[0];
 	a2[0] ^= a2[7]; /* reduce */
 	a2[2] ^= a2[7];
 	a2[3] ^= a2[7];
 
-	r[0] ^= a2[7] & b2[1]; /* add */
-	r[1] ^= a2[0] & b2[1];
-	r[2] ^= a2[1] & b2[1];
-	r[3] ^= a2[2] & b2[1];
-	r[4] ^= a2[3] & b2[1];
-	r[5] ^= a2[4] & b2[1];
-	r[6] ^= a2[5] & b2[1];
-	r[7] ^= a2[6] & b2[1];
+	r[0] ^= a2[7] & b[1]; /* add */
+	r[1] ^= a2[0] & b[1];
+	r[2] ^= a2[1] & b[1];
+	r[3] ^= a2[2] & b[1];
+	r[4] ^= a2[3] & b[1];
+	r[5] ^= a2[4] & b[1];
+	r[6] ^= a2[5] & b[1];
+	r[7] ^= a2[6] & b[1];
 	a2[7] ^= a2[6]; /* reduce */
 	a2[1] ^= a2[6];
 	a2[2] ^= a2[6];
 
-	r[0] ^= a2[6] & b2[2]; /* add */
-	r[1] ^= a2[7] & b2[2];
-	r[2] ^= a2[0] & b2[2];
-	r[3] ^= a2[1] & b2[2];
-	r[4] ^= a2[2] & b2[2];
-	r[5] ^= a2[3] & b2[2];
-	r[6] ^= a2[4] & b2[2];
-	r[7] ^= a2[5] & b2[2];
+	r[0] ^= a2[6] & b[2]; /* add */
+	r[1] ^= a2[7] & b[2];
+	r[2] ^= a2[0] & b[2];
+	r[3] ^= a2[1] & b[2];
+	r[4] ^= a2[2] & b[2];
+	r[5] ^= a2[3] & b[2];
+	r[6] ^= a2[4] & b[2];
+	r[7] ^= a2[5] & b[2];
 	a2[6] ^= a2[5]; /* reduce */
 	a2[0] ^= a2[5];
 	a2[1] ^= a2[5];
 
-	r[0] ^= a2[5] & b2[3]; /* add */
-	r[1] ^= a2[6] & b2[3];
-	r[2] ^= a2[7] & b2[3];
-	r[3] ^= a2[0] & b2[3];
-	r[4] ^= a2[1] & b2[3];
-	r[5] ^= a2[2] & b2[3];
-	r[6] ^= a2[3] & b2[3];
-	r[7] ^= a2[4] & b2[3];
+	r[0] ^= a2[5] & b[3]; /* add */
+	r[1] ^= a2[6] & b[3];
+	r[2] ^= a2[7] & b[3];
+	r[3] ^= a2[0] & b[3];
+	r[4] ^= a2[1] & b[3];
+	r[5] ^= a2[2] & b[3];
+	r[6] ^= a2[3] & b[3];
+	r[7] ^= a2[4] & b[3];
 	a2[5] ^= a2[4]; /* reduce */
 	a2[7] ^= a2[4];
 	a2[0] ^= a2[4];
 
-	r[0] ^= a2[4] & b2[4]; /* add */
-	r[1] ^= a2[5] & b2[4];
-	r[2] ^= a2[6] & b2[4];
-	r[3] ^= a2[7] & b2[4];
-	r[4] ^= a2[0] & b2[4];
-	r[5] ^= a2[1] & b2[4];
-	r[6] ^= a2[2] & b2[4];
-	r[7] ^= a2[3] & b2[4];
+	r[0] ^= a2[4] & b[4]; /* add */
+	r[1] ^= a2[5] & b[4];
+	r[2] ^= a2[6] & b[4];
+	r[3] ^= a2[7] & b[4];
+	r[4] ^= a2[0] & b[4];
+	r[5] ^= a2[1] & b[4];
+	r[6] ^= a2[2] & b[4];
+	r[7] ^= a2[3] & b[4];
 	a2[4] ^= a2[3]; /* reduce */
 	a2[6] ^= a2[3];
 	a2[7] ^= a2[3];
 
-	r[0] ^= a2[3] & b2[5]; /* add */
-	r[1] ^= a2[4] & b2[5];
-	r[2] ^= a2[5] & b2[5];
-	r[3] ^= a2[6] & b2[5];
-	r[4] ^= a2[7] & b2[5];
-	r[5] ^= a2[0] & b2[5];
-	r[6] ^= a2[1] & b2[5];
-	r[7] ^= a2[2] & b2[5];
+	r[0] ^= a2[3] & b[5]; /* add */
+	r[1] ^= a2[4] & b[5];
+	r[2] ^= a2[5] & b[5];
+	r[3] ^= a2[6] & b[5];
+	r[4] ^= a2[7] & b[5];
+	r[5] ^= a2[0] & b[5];
+	r[6] ^= a2[1] & b[5];
+	r[7] ^= a2[2] & b[5];
 	a2[3] ^= a2[2]; /* reduce */
 	a2[5] ^= a2[2];
 	a2[6] ^= a2[2];
 
-	r[0] ^= a2[2] & b2[6]; /* add */
-	r[1] ^= a2[3] & b2[6];
-	r[2] ^= a2[4] & b2[6];
-	r[3] ^= a2[5] & b2[6];
-	r[4] ^= a2[6] & b2[6];
-	r[5] ^= a2[7] & b2[6];
-	r[6] ^= a2[0] & b2[6];
-	r[7] ^= a2[1] & b2[6];
+	r[0] ^= a2[2] & b[6]; /* add */
+	r[1] ^= a2[3] & b[6];
+	r[2] ^= a2[4] & b[6];
+	r[3] ^= a2[5] & b[6];
+	r[4] ^= a2[6] & b[6];
+	r[5] ^= a2[7] & b[6];
+	r[6] ^= a2[0] & b[6];
+	r[7] ^= a2[1] & b[6];
 	a2[2] ^= a2[1]; /* reduce */
 	a2[4] ^= a2[1];
 	a2[5] ^= a2[1];
 
-	r[0] ^= a2[1] & b2[7]; /* add */
-	r[1] ^= a2[2] & b2[7];
-	r[2] ^= a2[3] & b2[7];
-	r[3] ^= a2[4] & b2[7];
-	r[4] ^= a2[5] & b2[7];
-	r[5] ^= a2[6] & b2[7];
-	r[6] ^= a2[7] & b2[7];
-	r[7] ^= a2[0] & b2[7];
+	r[0] ^= a2[1] & b[7]; /* add */
+	r[1] ^= a2[2] & b[7];
+	r[2] ^= a2[3] & b[7];
+	r[3] ^= a2[4] & b[7];
+	r[4] ^= a2[5] & b[7];
+	r[5] ^= a2[6] & b[7];
+	r[6] ^= a2[7] & b[7];
+	r[7] ^= a2[0] & b[7];
+}
+
+
+/*
+ * Square `x` in GF(2^8) and write the result to `r`. `r` and `x` may overlap.
+ */
+static void gf256_square(uint32_t r[8], const uint32_t x[8])
+{
+	uint32_t r8, r10, r12, r14;
+	/* Use the Freshman's Dream rule to square the polynomial
+	 * Assignments are done from 7 downto 0, because this allows the user
+	 * to execute this function in-place (e.g. `gf256_square(r, r);`).
+	 */
+	r14  = x[7];
+	r12  = x[6];
+	r10  = x[5];
+	r8   = x[4];
+	r[6] = x[3];
+	r[4] = x[2];
+	r[2] = x[1];
+	r[0] = x[0];
+
+	/* Reduce with  x^8 + x^4 + x^3 + x + 1 until order is less than 8 */
+	r[7]  = r14;  /* r[7] was 0 */
+	r[6] ^= r14;
+	r10  ^= r14;
+	/* Skip, because r13 is always 0 */
+	r[4] ^= r12;
+	r[5]  = r12;  /* r[5] was 0 */
+	r[7] ^= r12;
+	r8   ^= r12;
+	/* Skip, because r11 is always 0 */
+	r[2] ^= r10;
+	r[3]  = r10; /* r[3] was 0 */
+	r[5] ^= r10;
+	r[6] ^= r10;
+	r[1]  = r14; /* r[1] was 0 */
+	r[2] ^= r14; /* Substitute r9 by r14 because they will always be equal*/
+	r[4] ^= r14;
+	r[5] ^= r14;
+	r[0] ^= r8;
+	r[1] ^= r8;
+	r[3] ^= r8;
+	r[4] ^= r8;
 }
 
 
@@ -187,11 +232,10 @@ static void gf256_inv(uint32_t r[8], uint32_t x[8])
 	memcpy(r, x, sizeof(uint32_t[8]));
 	/* Use square-multiply to calculate a^254 */
 	for (idx = 0; idx < 6; idx++) {
-		/* TODO(dsprenkels) Optimize for squaring */
-		gf256_mul(r, r, r);
+		gf256_square(r, r);
 		gf256_mul(r, r, x);
 	}
-	gf256_mul(r, r, r);
+	gf256_square(r, r);
 }
 
 
