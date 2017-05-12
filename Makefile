@@ -1,4 +1,4 @@
-CFLAGS = -Wall -g -O3
+CFLAGS = -Wall -g -O2
 SRCS = hazmat.c randombytes.c serialize.c sss.c keccak.c tweetnacl.c
 OBJS := ${SRCS:.c=.o}
 
@@ -6,6 +6,9 @@ all: libsss.a
 
 libsss.a: $(OBJS)
 	$(AR) -rcs libsss.a $^
+
+# Optimize hazmat.c as hard as possible
+hazmat.o: CFLAGS += -O3 -funroll-loops
 
 %.out: %.o
 	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS)
