@@ -271,7 +271,8 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
  * that the array `out` has enough space to hold at least `n` sss_Keyshare
  * structs.
  */
- void sss_create_keyshares(sss_Keyshare *out,
+ void
+ sss_create_keyshares(sss_Keyshare *out,
                            const uint8_t key[32],
                            uint8_t n,
                            uint8_t k)
