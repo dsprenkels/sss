@@ -1,7 +1,23 @@
+/*
+ * AEAD wrapper around the Secret shared data
+ *
+ * Author: Daan Sprenkels <hello@dsprenkels.com>
+ *
+ * This module implements a AEAD wrapper around some secret shared data,
+ * allowing the data to be in any format. (Directly secret-sharing requires the
+ * message to be picked uniformly in the message space.)
+ *
+ * The NaCl cryptographic library is used for the encryption. The encryption
+ * scheme that is used for wrapping the message is salsa20/poly1305. Because
+ * we are using an ephemeral key, we are using a zero'd nonce.
+ */
+
+
 #include "tweetnacl.h"
 #include "sss.h"
 #include <assert.h>
 #include <string.h>
+
 
 /*
  * These assertions may be considered overkill, but would if the tweetnacl API
@@ -19,6 +35,9 @@
 static const unsigned char nonce[crypto_secretbox_NONCEBYTES] = { 0 };
 
 
+/*
+ * Create `n` shares with theshold `k` and write them to `out`
+ */
 void sss_create_shares(sss_Share *out, const unsigned char *data,
 	               uint8_t n, uint8_t k, const unsigned char key[32])
 {
@@ -45,6 +64,13 @@ void sss_create_shares(sss_Share *out, const unsigned char *data,
 }
 
 
+/*
+ * Combine `k` shares pointed to by `shares` and write the result to `data`
+ *
+ * This function returns -1 if any of the shares were corrupted or if the number
+ * of shares was too low. It is not possible to detect which of these errors
+ * did occur.
+ */
 int sss_combine_shares(uint8_t *data, const sss_Share *shares, uint8_t k)
 {
 	unsigned char key[crypto_secretbox_KEYBYTES];

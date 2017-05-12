@@ -2,28 +2,6 @@
 #include <assert.h>
 #include <string.h>
 
-static void test_gf256_mul()
-{
-	assert(gf256_mul(0x00, 0x00) == 0x00);
-	assert(gf256_mul(0x01, 0x00) == 0x00);
-	assert(gf256_mul(0x00, 0x01) == 0x00);
-	assert(gf256_mul(0x01, 0x01) == 0x01);
-	assert(gf256_mul(0x88, 0x88) == 0xda);
-	assert(gf256_mul(0xff, 0xff) == 0x13);
-}
-
-static void test_gf256_inv()
-{
-	size_t idx;
-	uint8_t tmp;
-
-	assert(gf256_inv(0) == 0);
-	for (idx = 1; idx < 256; idx++) {
-		tmp = idx;
-		assert(gf256_mul(gf256_inv(tmp), tmp) == 1);
-	}
-}
-
 
 static void test_key_shares()
 {
@@ -55,8 +33,6 @@ static void test_key_shares()
 
 int main()
 {
-	test_gf256_mul();
-	test_gf256_inv();
 	test_key_shares();
 	return 0;
 }
