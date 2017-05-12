@@ -10,7 +10,7 @@
 
 void randombytes(void *buf, const size_t n)
 {
-#ifdef __linux_
+#ifdef __linux__
 	int tmp = syscall(SYS_getrandom, buf, n, 0);
 	assert(tmp == n); /* Failure indicates a bug in the code */
 #else
