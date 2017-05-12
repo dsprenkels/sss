@@ -9,11 +9,13 @@ typedef struct {
 } ByteShare;
 
 
-extern void FIPS202_SHAKE256(const unsigned char *in, unsigned long long inLen,
-	                     unsigned char *out, unsigned long long outLen);
+extern void
+FIPS202_SHAKE256(const unsigned char *in, unsigned long long inLen,
+                 unsigned char *out, unsigned long long outLen);
 
 
-static void bitslice(uint32_t r[8], const uint8_t x[32])
+static inline void
+bitslice(uint32_t r[8], const uint8_t x[32])
 {
 	size_t bit_idx, arr_idx;
 	uint32_t cur;
@@ -28,7 +30,8 @@ static void bitslice(uint32_t r[8], const uint8_t x[32])
 }
 
 
-static void unbitslice(uint8_t r[32], const uint32_t x[8])
+static inline void
+unbitslice(uint8_t r[32], const uint32_t x[8])
 {
 	size_t bit_idx, arr_idx;
 	uint32_t cur;
@@ -43,7 +46,8 @@ static void unbitslice(uint8_t r[32], const uint32_t x[8])
 }
 
 
-static void bitslice_setall(uint32_t r[8], const uint8_t x)
+static inline void
+bitslice_setall(uint32_t r[8], const uint8_t x)
 {
 	size_t idx;
 	for (idx = 0; idx < 8; idx++) {
@@ -55,7 +59,8 @@ static void bitslice_setall(uint32_t r[8], const uint8_t x)
 /*
  * Add (XOR) `r` with `x` and store the result in `r`.
  */
-static void gf256_add(uint32_t r[8], const uint32_t x[8])
+static inline void
+gf256_add(uint32_t r[8], const uint32_t x[8])
 {
 	size_t idx;
 	for (idx = 0; idx < 8; idx++) r[idx] ^= x[idx];
@@ -68,7 +73,8 @@ static void gf256_add(uint32_t r[8], const uint32_t x[8])
  * and `b` will produce an incorrect result! If you need to square a polynomial
  * use `gf256_square` instead.
  */
-static void gf256_mul(uint32_t r[8], const uint32_t a[8], const uint32_t b[8])
+static inline void
+gf256_mul(uint32_t r[8], const uint32_t a[8], const uint32_t b[8])
 {
 	/* This function implements Russian Peasant multiplication on two
 	 * bitsliced polynomials.
@@ -182,7 +188,8 @@ static void gf256_mul(uint32_t r[8], const uint32_t a[8], const uint32_t b[8])
 /*
  * Square `x` in GF(2^8) and write the result to `r`. `r` and `x` may overlap.
  */
-static void gf256_square(uint32_t r[8], const uint32_t x[8])
+static inline void
+gf256_square(uint32_t r[8], const uint32_t x[8])
 {
 	uint32_t r8, r10, r12, r14;
 	/* Use the Freshman's Dream rule to square the polynomial
@@ -226,7 +233,8 @@ static void gf256_square(uint32_t r[8], const uint32_t x[8])
 /*
  * Invert `x` in GF(2^8) and write the result to `r`
  */
-static void gf256_inv(uint32_t r[8], uint32_t x[8])
+static inline void
+gf256_inv(uint32_t r[8], uint32_t x[8])
 {
 	size_t idx;
 	memcpy(r, x, sizeof(uint32_t[8]));
