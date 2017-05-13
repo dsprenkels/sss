@@ -273,9 +273,9 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
  */
  void
  sss_create_keyshares(sss_Keyshare *out,
-                           const uint8_t key[32],
-                           uint8_t n,
-                           uint8_t k)
+                      const uint8_t key[32],
+                      uint8_t n,
+                      uint8_t k)
 {
 	/* Check if the parameters are valid */
 	assert(n != 0);
@@ -323,7 +323,7 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 	size_t share_idx, idx1, idx2;
 	uint32_t xs[k][8], ys[k][8];
 	uint32_t num[8], denom[8], tmp[8];
-	uint32_t secret[8] = {0}, basis_poly[8] = {0};
+	uint32_t secret[8] = {0};
 
 	/* Collect the x and y values */
 	for (share_idx = 0; share_idx < k; share_idx++) {
@@ -335,8 +335,8 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 	for (idx1 = 0; idx1 < k; idx1++) {
 		memset(num, 0, sizeof(num));
 		memset(denom, 0, sizeof(denom));
-		num[0] = ~0;
-		denom[0] = ~0;
+		num[0] = ~0; /* num is the numerator (=1) */
+		denom[0] = ~0; /* denom is the numerator (=1) */
 		for (idx2 = 0; idx2 < k; idx2++) {
 			if (idx1 == idx2) continue;
 			gf256_mul(num, num, xs[idx2]);
@@ -344,11 +344,10 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 			gf256_add(tmp, xs[idx2]);
 			gf256_mul(denom, denom, tmp);
 		}
-		gf256_inv(tmp, denom);
-		gf256_mul(basis_poly, num, tmp);
-		/* Add scaled polynomial coefficient to restored secret */
-		gf256_mul(tmp, ys[idx1], basis_poly);
-		gf256_add(secret, tmp);
+		gf256_inv(tmp, denom); /* inverted denominator */
+		gf256_mul(num, num, tmp); /* basis polynomial */
+		gf256_mul(num, num, ys[idx1]); /* scaled coefficient */
+		gf256_add(secret, num);
 	}
 	unbitslice(key, secret);
 }
