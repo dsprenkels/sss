@@ -7,8 +7,8 @@ all: libsss.a
 libsss.a: $(OBJS)
 	$(AR) -rcs libsss.a $^
 
-# Optimize hazmat.c as hard as possible
-hazmat.o: CFLAGS += -O3 -funroll-loops
+# Force unrolling loops on hazmat.c
+hazmat.o: CFLAGS += -funroll-loops
 
 %.out: %.o
 	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS)
