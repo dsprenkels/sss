@@ -19,7 +19,6 @@
 
 
 #include "hazmat.h"
-#include "tweetnacl.h"
 #include <assert.h>
 #include <string.h>
 

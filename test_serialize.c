@@ -8,7 +8,6 @@
 int main()
 {
 	uint8_t data[sss_MLEN] = { 42 }, restored[sss_MLEN];
-	uint8_t key[32] = { 0 };
 	uint8_t serialized[sss_SHARE_SERIALIZED_LEN];
 	sss_Keyshare keyshare;
 	sss_Share share;
@@ -45,7 +44,7 @@ int main()
 	}
 
 	/* Normal operation with one share */
-	sss_create_shares(&share, data, 1, 1, key);
+	sss_create_shares(&share, data, 1, 1);
 	sss_serialize_share(serialized, &share);
 	memset(&share, 0, sizeof(sss_Share));
 	sss_unserialize_share(&share, serialized);
