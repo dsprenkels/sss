@@ -1,4 +1,4 @@
-#include "randombytes.h"
+#include "randombytes/randombytes.h"
 #include "sss.h"
 #include "tweetnacl.h"
 #include <assert.h>
