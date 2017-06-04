@@ -11,7 +11,19 @@ all the others well enough that they won't secretly break into the vault and
 sell the recipe to a competitor. So they split the code into 5 shares, and
 allow 3 shares to restore the original code. Now they are sure that the
 majority of the staff will know when the vault is opened, but they also don't
-need *all* the shares if they wany to open the vault.
+need *all* the shares if they want to open the vault.
+
+As often with crypto libraries, there is a lot of Shamir secret sharing code
+around that *does not meet cryptographic standards* (a.k.a. is insecure).
+Some details—like integrity checks and side-channel resistance—are often
+forgotten. But these slip-ups can often fully compromise the security of the
+scheme.
+With this in mind, I have made this library to be:
+- Side channel resistant
+- Shares are secured with a MAC
+- Builtin entropy generator
+
+It should be safe to use this library in "the real world".
 
 ## Usage
 
