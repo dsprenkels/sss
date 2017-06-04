@@ -27,6 +27,19 @@ It should be safe to use this library in "the real world".
 
 ## Usage
 
+Secrets are provided as arrays of 64 bytes long. This should be big enough to
+store generally small secrets. If you wish to split larger chunks of data, you
+can use symmetric encryption and split the key instead. Shares are generated
+from secret data using `sss_create_shares` and shares can be combined again
+using the `sss_combine_shares` functions.
+
+For storage you may want to represent your shares as buffers, instead of
+structs. For this purpose the `sss_serialize_share` and `sss_unserialize_share`
+functions exist. They will (de)serialize `Share` structs into buffers of 113
+bytes each.
+
+### Example
+
 Currently there is still the issue of generating a string of bytes portably on
 every platform. I am currently [working on this][randombytes]. But until I have
 solved this I would not consider the API to be stable.
