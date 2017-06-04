@@ -255,14 +255,19 @@ gf256_square(uint32_t r[8], const uint32_t x[8])
 static inline void
 gf256_inv(uint32_t r[8], uint32_t x[8])
 {
-	size_t idx;
-	memcpy(r, x, sizeof(uint32_t[8]));
-	/* Use square-multiply to calculate a^254 */
-	for (idx = 0; idx < 6; idx++) {
-		gf256_square(r, r);
-		gf256_mul(r, r, x);
-	}
-	gf256_square(r, r);
+	uint32_t y[8], z[8];
+
+	gf256_square(y, x); // y = x^2
+	gf256_square(y, y); // y = x^4
+	gf256_square(r, y); // r = x^8
+	gf256_mul(z, r, x); // z = x^9
+	gf256_square(r, r); // r = x^16
+	gf256_mul(r, r, z); // r = x^25
+	gf256_square(r, r); // r = x^50
+	gf256_square(z, r); // z = x^100
+	gf256_square(z, z); // z = x^200
+	gf256_mul(r, r, z); // r = x^250
+	gf256_mul(r, r, y); // r = x^254
 }
 
 
