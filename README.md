@@ -64,6 +64,14 @@ done because of crypto-technical reasons). This wrapper uses the
 Salsa20/Poly1305 authenticated encryption scheme. Because of this, the
 shares are always a little bit larger than the original data.
 
+Currently, this library uses a drop-in `randombytes` dummy function to satisfy
+TweetNaCl's needs. This function is actually never used and I may choose to
+replace this function by either a [somewhat more robust
+implementation][randombytes] or by a single call to `abort()`. This is not a
+problem when calling the sss-library from another language. In these cases, I
+just use the platform's random source (e.g. `"crypto/rand"` with Go and
+`crypto.randomBytes()` with Node.js).
+
 ## Questions
 
 Feel free to send me an email on my Github associated e-mail address.
