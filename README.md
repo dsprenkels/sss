@@ -51,6 +51,13 @@ int main()
 }
 ```
 
+## Bindings
+
+I have currently written bindings for the following languages:
+
+- [Node.js](https://github.com/dsprenkels/sss-node)
+- [Go](https://github.com/dsprenkels/sss-go)
+
 ## Technical details
 
 Shamir secret sharing works by generating a polynomial (e.g. _33x³ + 8x² + 29x +
