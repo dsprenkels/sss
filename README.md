@@ -18,10 +18,10 @@ around that *does not meet cryptographic standards* (a.k.a. is insecure).
 Some details—like integrity checks and side-channel resistance—are often
 forgotten. But these slip-ups can often fully compromise the security of the
 scheme.
-With this in mind, I have made this library to be:
-- Side channel resistant
-- Shares are secured with a MAC
-- Builtin entropy generator
+With this in mind, I have made this library to:
+- Be side channel resistant
+- Secure secret with a MAC
+- Use the platform (OS) randomness source
 
 It should be safe to use this library in "the real world".
 
