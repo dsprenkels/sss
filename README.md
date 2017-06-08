@@ -2,7 +2,7 @@
 
 `sss` is a library that exposes an API to split secret data buffers into
 a number of different _shares_. With the posession of some or all of these
-shares, the original secret can be restored. It's basiscly a *double-key*
+shares, the original secret can be restored. It's essentially a *double-key*
 system, but then cryptograpically.
 
 An example use case is a beer brewery which has a vault which conains their
