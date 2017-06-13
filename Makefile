@@ -4,15 +4,18 @@ OBJS := ${SRCS:.c=.o}
 
 all: libsss.a
 
-libsss.a: $(OBJS)
+libsss.a: randombytes/librandombytes.a $(OBJS)
 	$(AR) -rcs libsss.a $^
+
+randombytes/librandombytes.a:
+	$(MAKE) -C randombytes librandombytes.a
 
 # Force unrolling loops on hazmat.c
 hazmat.o: CFLAGS += -funroll-loops
 
-%.out: %.o
+%.out: %.o randombytes/librandombytes.a
 	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS)
-	valgrind -q --leak-check=full --error-exitcode=1 ./$@
+	$(MEMCHECK) ./$@
 
 test_hazmat.out: $(filter-out hazmat.o,$(OBJS))
 test_sss.out: $(OBJS)
@@ -23,4 +26,5 @@ test: test_hazmat.out test_serialize.out test_sss.out
 
 .PHONY: clean
 clean:
+	$(MAKE) -C randombytes $@
 	$(RM) *.o *.gch *.a *.out
