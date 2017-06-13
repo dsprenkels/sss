@@ -23,7 +23,7 @@ With this in mind, I have made this library to:
 - Secure secret with a MAC
 - Use the platform (OS) randomness source
 
-It should be safe to use this library in "the real world", but not that until
+It should be safe to use this library in "the real world", but note that until
 the release of version 1.0 the API may be changed without backward
 compatibility.
 
