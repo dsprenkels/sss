@@ -1,8 +1,6 @@
 CFLAGS = -Wall -g -O2
-SRCS = hazmat.c serialize.c sss.c keccak.c tweetnacl.c
-OBJS = ${SRCS:.c=.o}
-LDFLAGS = -L./randombytes
-LDLIBS = -lrandombytes
+SRCS = hazmat.c randombytes.c sss.c keccak.c tweetnacl.c
+OBJS := ${SRCS:.c=.o}
 
 all: libsss.a
 

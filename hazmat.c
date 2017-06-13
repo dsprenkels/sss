@@ -34,6 +34,20 @@ FIPS202_SHAKE256(const unsigned char *in, unsigned long long inLen,
                  unsigned char *out, unsigned long long outLen);
 
 
+void sss_serialize_keyshare(uint8_t *out, const sss_Keyshare *keyshare)
+{
+	out[0] = keyshare->x;
+	memcpy(&out[1], &keyshare->y, sizeof(uint8_t[32]));
+}
+
+
+void sss_deserialize_keyshare(sss_Keyshare *keyshare, const uint8_t *in)
+{
+	keyshare->x = in[0];
+	memcpy(&keyshare->y, &in[1], sizeof(uint8_t[32]));
+}
+
+
 static inline void
 bitslice(uint32_t r[8], const uint8_t x[32])
 {
