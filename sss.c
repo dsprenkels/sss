@@ -13,7 +13,7 @@
  */
 
 
-#include "randombytes/randombytes.h"
+#include "randombytes.h"
 #include "tweetnacl.h"
 #include "sss.h"
 #include "tweetnacl.h"
