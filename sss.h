@@ -26,17 +26,17 @@ Length of the message (must be known at compile-time)
 #define sss_CLEN (sss_MLEN + 16)
 
 
-#define sss_SHARE_SERIALIZED_LEN (sss_CLEN + sss_KEYSHARE_SERIALIZED_LEN)
+/*
+ * Length of a SSS share
+ */
+#define sss_SHARE_LEN (sss_CLEN + sss_KEYSHARE_SERIALIZED_LEN)
 
 
 /*
  * One share of a secret which is shared using Shamir's
  * the `sss_create_shares` function.
  */
-typedef struct {
-	sss_Keyshare keyshare;
-	unsigned char c[sss_CLEN];
-} sss_Share;
+typedef uint8_t sss_Share[sss_SHARE_LEN];
 
 
 /*
