@@ -20,7 +20,7 @@ forgotten. But these slip-ups can often fully compromise the security of the
 scheme.
 With this in mind, I have made this library to:
 - Be side channel resistant
-- Secure secret with a MAC
+- Secure the shared secret with a MAC
 - Use the platform (OS) randomness source
 
 It should be safe to use this library in "the real world", but note that until
@@ -33,18 +33,10 @@ Secrets are provided as arrays of 64 bytes long. This should be big enough to
 store generally small secrets. If you wish to split larger chunks of data, you
 can use symmetric encryption and split the key instead. Shares are generated
 from secret data using `sss_create_shares` and shares can be combined again
-using the `sss_combine_shares` functions.
-
-For storage you may want to represent your shares as buffers, instead of
-structs. For this purpose the `sss_serialize_share` and `sss_unserialize_share`
-functions exist. They will (de)serialize `Share` structs into buffers of 113
-bytes each.
+using the `sss_combine_shares` functions. The shares are a octet strings of
+113 bytes each.
 
 ### Example
-
-Currently there is still the issue of generating a string of bytes portably on
-every platform. I am currently [working on this][randombytes]. But until I have
-solved this I would not consider the API to be stable.
 
 ```c
 #include "sss.h"
@@ -55,13 +47,9 @@ solved this I would not consider the API to be stable.
 int main()
 {
 	uint8_t data[sss_MLEN], restored[sss_MLEN];
-	uint8_t random_bytes[32] = { 0 };
 	sss_Share shares[5];
 	size_t idx;
 	int tmp;
-
-	/* Generate some random bytes for the scheme */
-	randombytes(random_bytes, 32);
 
 	/* Create a message [42, 42, ..., 42] */
 	for (idx = 0; idx < sizeof(data), ++idx) {
@@ -69,7 +57,7 @@ int main()
 	}
 
 	/* Split the secret into 5 shares (with a recombination theshold of 3) */
-	sss_create_shares(shares, data, 5, 3, random_bytes);
+	sss_create_shares(shares, data, 5, 3);
 
 	/* Combine some of the shares to restore the original secret */
 	tmp = sss_combine_shares(restored, shares, 3);
@@ -98,13 +86,10 @@ done because of crypto-technical reasons). This wrapper uses the
 Salsa20/Poly1305 authenticated encryption scheme. Because of this, the
 shares are always a little bit larger than the original data.
 
-Currently, this library uses a drop-in `randombytes` dummy function to satisfy
-TweetNaCl's needs. This function is actually never used and I may choose to
-replace this function by either a [somewhat more robust
-implementation][randombytes] or by a single call to `abort()`. This is not a
-problem when calling the sss-library from another language. In these cases, I
-just use the platform's random source (e.g. `"crypto/rand"` with Go and
-`crypto.randomBytes()` with Node.js).
+This library uses a custom [`randombytes`][randombytes] function to generate a
+random encapsulation key, which talks directly to the operating system. When
+using the high level API, you are not allowed to choose your own key. It _must_
+be uniformly random, because regularities in secret-shared can be exploited.
 
 ## Questions
 
