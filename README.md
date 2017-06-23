@@ -91,6 +91,15 @@ random encapsulation key, which talks directly to the operating system. When
 using the high level API, you are not allowed to choose your own key. It _must_
 be uniformly random, because regularities in secret-shared can be exploited.
 
+With the low level API (`hazmat.h`) you _can_ choose to secret-share a piece of
+data of exactly 32 bytes. This produces a set of shares that are much shorter
+than the high-level shares (namely 33 bytes each). However, keep in mind that
+this module is called `hazmat.h` (for "hazardous materials") for a reason.
+Please only use this if you _really_ know what you are doing. Raw "textbook"
+Shamir secret sharing is only safe when using a uniformly random secret (with
+128 bits of entropy). Note also that it is entirely insecure for integrity.
+Please do not use the low-level API unless you _really_ have no other choice.
+
 ## Questions
 
 Feel free to send me an email on my Github associated e-mail address.
