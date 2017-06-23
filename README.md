@@ -1,5 +1,7 @@
 # Shamir secret sharing library
 
+[![Build Status](https://travis-ci.org/dsprenkels/sss.svg?branch=master)](https://travis-ci.org/dsprenkels/sss)
+
 `sss` is a library that exposes an API to split secret data buffers into
 a number of different _shares_. With the posession of some or all of these
 shares, the original secret can be restored. It's essentially a *double-key*
