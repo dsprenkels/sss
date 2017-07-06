@@ -15,4 +15,4 @@ addons:
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export MEMCHECK="valgrind -q --leak-check=full --error-exitcode=1"; fi
-  - make && make test
+  - make && make check

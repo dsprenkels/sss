@@ -20,8 +20,8 @@ hazmat.o: CFLAGS += -funroll-loops
 test_hazmat.out: $(filter-out hazmat.o,$(OBJS))
 test_sss.out: $(OBJS)
 
-.PHONY: test
-test: test_hazmat.out test_sss.out
+.PHONY: check
+check: test_hazmat.out test_sss.out
 
 .PHONY: clean
 clean:
