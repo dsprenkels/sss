@@ -4,8 +4,8 @@
 
 `sss` is a library that exposes an API to split secret data buffers into
 a number of different _shares_. With the posession of some or all of these
-shares, the original secret can be restored. It's essentially a *double-key*
-system, but then cryptograpically.
+shares, the original secret can be restored. It is the schoolbook example of
+a cryptographic _threshold scheme_.
 
 An example use case is a beer brewery which has a vault which conains their
 precious super secret recipe. The 5 board members of this brewery do not trust
@@ -80,7 +80,7 @@ I have currently written bindings for the following languages:
 Shamir secret sharing works by generating a polynomial (e.g. _33x³ + 8x² + 29x +
 42_). The lowest term is the term is the secret and is just filled in. All the
 other terms are generated randomly. Then we can pick points on the polynomial
-by filling in values for _x_. Each point is put in a share. Afterwards,with _k_
+by filling in values for _x_. Each point is put in a share. Afterwards, with _k_
 points we can use interpolation to restore a _k_-degree polynomial.
 
 In practice there is a wrapper around the secret-sharing part (this is
