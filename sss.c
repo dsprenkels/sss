@@ -40,16 +40,16 @@ static const unsigned char nonce[crypto_secretbox_NONCEBYTES] = { 0 };
 /*
  * Return a pointer to the ciphertext part of this Share
  */
-static uint8_t* get_ciphertext(const sss_Share *share)
+static uint8_t* get_ciphertext(sss_Share *share)
 {
 	return (uint8_t*) &(*share)[sss_KEYSHARE_LEN];
 }
 
 
 /*
- * Return a pointer to the KeyShare part of this Share
+ * Return a pointer to the Keyshare part of this Share
  */
-static sss_Keyshare* get_keyshare(const sss_Share *share)
+static sss_Keyshare* get_keyshare(sss_Share *share)
 {
 	return (sss_Keyshare*) &share[0];
 }
