@@ -29,7 +29,7 @@ Length of the message (must be known at compile-time)
 /*
  * Length of a SSS share
  */
-#define sss_SHARE_LEN (sss_CLEN + sss_KEYSHARE_SERIALIZED_LEN)
+#define sss_SHARE_LEN (sss_CLEN + sss_KEYSHARE_LEN)
 
 
 /*
