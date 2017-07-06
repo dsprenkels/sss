@@ -38,6 +38,24 @@ static const unsigned char nonce[crypto_secretbox_NONCEBYTES] = { 0 };
 
 
 /*
+ * Return a pointer to the ciphertext part of this Share
+ */
+static uint8_t* get_ciphertext(const sss_Share *share)
+{
+	return (uint8_t*) &(*share)[sss_KEYSHARE_LEN];
+}
+
+
+/*
+ * Return a pointer to the KeyShare part of this Share
+ */
+static sss_Keyshare* get_keyshare(const sss_Share *share)
+{
+	return (sss_Keyshare*) &share[0];
+}
+
+
+/*
  * Create `n` shares with theshold `k` and write them to `out`
  */
 void sss_create_shares(sss_Share *out, const unsigned char *data,
@@ -64,8 +82,9 @@ void sss_create_shares(sss_Share *out, const unsigned char *data,
 
 	/* Build regular shares */
 	for (idx = 0; idx < n; idx++) {
-		sss_serialize_keyshare(out[idx], &keyshares[idx]);
-		memcpy(&out[idx][sss_KEYSHARE_SERIALIZED_LEN],
+		memcpy(get_keyshare(&out[idx]), &keyshares[idx][0],
+		sss_KEYSHARE_LEN);
+		memcpy(get_ciphertext(&out[idx]),
 		       &c[crypto_secretbox_BOXZEROBYTES], sss_CLEN);
 	}
 }
@@ -91,22 +110,22 @@ int sss_combine_shares(uint8_t *data, const sss_Share *shares, uint8_t k)
 	/* Check if all ciphertexts are the same */
 	if (k < 1) return -1;
 	for (idx = 1; idx < k; idx++) {
-		if (memcmp(&shares[0][sss_KEYSHARE_SERIALIZED_LEN],
-		           &shares[idx][sss_KEYSHARE_SERIALIZED_LEN],
-		           sss_CLEN) != 0) {
+		if (memcmp(get_ciphertext(&shares[0]),
+		           get_ciphertext(&shares[idx]), sss_CLEN) != 0) {
 			return -1;
 		}
 	}
 
 	/* Restore the key */
 	for (idx = 0; idx < k; idx++) {
-		sss_deserialize_keyshare(&keyshares[idx], &shares[idx][0]);
+		memcpy(&keyshares[idx], get_keyshare(&shares[idx]),
+		       sss_KEYSHARE_LEN);
 	}
 	sss_combine_keyshares(key, keyshares, k);
 
 	/* Decrypt the ciphertext */
 	memcpy(&c[crypto_secretbox_BOXZEROBYTES],
-	       &shares[0][sss_KEYSHARE_SERIALIZED_LEN], sss_CLEN);
+	       &shares[0][sss_KEYSHARE_LEN], sss_CLEN);
 	ret |= crypto_secretbox_open(m, c, clen, nonce, key);
 	memcpy(data, &m[crypto_secretbox_ZEROBYTES], sss_MLEN);
 

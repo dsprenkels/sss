@@ -34,19 +34,6 @@ FIPS202_SHAKE256(const unsigned char *in, unsigned long long inLen,
                  unsigned char *out, unsigned long long outLen);
 
 
-void sss_serialize_keyshare(uint8_t *out, const sss_Keyshare *keyshare)
-{
-	out[0] = keyshare->x;
-	memcpy(&out[1], &keyshare->y, sizeof(uint8_t[32]));
-}
-
-
-void sss_deserialize_keyshare(sss_Keyshare *keyshare, const uint8_t *in)
-{
-	keyshare->x = in[0];
-	memcpy(&keyshare->y, &in[1], sizeof(uint8_t[32]));
-}
-
 
 static inline void
 bitslice(uint32_t r[8], const uint8_t x[32])
@@ -312,7 +299,7 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 	for (share_idx = 0; share_idx < n; share_idx++) {
 		/* x value is in 1..n */
 		unbitsliced_x = share_idx + 1;
-		out[share_idx].x = unbitsliced_x;
+		out[share_idx][0] = unbitsliced_x;
 		bitslice_setall(x, unbitsliced_x);
 
 		/* Calculate y */
@@ -325,7 +312,7 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 			gf256_mul(tmp, xpow, poly[coeff_idx]);
 			gf256_add(y, tmp);
 		}
-		unbitslice(out[share_idx].y, y);
+		unbitslice(&out[share_idx][1], y);
 	}
 }
 
@@ -345,8 +332,8 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 
 	/* Collect the x and y values */
 	for (share_idx = 0; share_idx < k; share_idx++) {
-		bitslice_setall(xs[share_idx], key_shares[share_idx].x);
-		bitslice(ys[share_idx], key_shares[share_idx].y);
+		bitslice_setall(xs[share_idx], key_shares[share_idx][0]);
+		bitslice(ys[share_idx], &key_shares[share_idx][1]);
 	}
 
 	/* Use Lagrange basis polynomials to calculate the secret coefficient */
