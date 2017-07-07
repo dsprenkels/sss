@@ -35,7 +35,7 @@ FIPS202_SHAKE256(const unsigned char *in, unsigned long long inLen,
 
 
 
-static inline void
+static void
 bitslice(uint32_t r[8], const uint8_t x[32])
 {
 	size_t bit_idx, arr_idx;
@@ -51,7 +51,7 @@ bitslice(uint32_t r[8], const uint8_t x[32])
 }
 
 
-static inline void
+static void
 unbitslice(uint8_t r[32], const uint32_t x[8])
 {
 	size_t bit_idx, arr_idx;
@@ -67,7 +67,7 @@ unbitslice(uint8_t r[32], const uint32_t x[8])
 }
 
 
-static inline void
+static void
 bitslice_setall(uint32_t r[8], const uint8_t x)
 {
 	size_t idx;
@@ -80,7 +80,7 @@ bitslice_setall(uint32_t r[8], const uint8_t x)
 /*
  * Add (XOR) `r` with `x` and store the result in `r`.
  */
-static inline void
+static void
 gf256_add(uint32_t r[8], const uint32_t x[8])
 {
 	size_t idx;
@@ -94,7 +94,7 @@ gf256_add(uint32_t r[8], const uint32_t x[8])
  * and `b` will produce an incorrect result! If you need to square a polynomial
  * use `gf256_square` instead.
  */
-static inline void
+static void
 gf256_mul(uint32_t r[8], const uint32_t a[8], const uint32_t b[8])
 {
 	/* This function implements Russian Peasant multiplication on two
@@ -207,7 +207,7 @@ gf256_mul(uint32_t r[8], const uint32_t a[8], const uint32_t b[8])
 /*
  * Square `x` in GF(2^8) and write the result to `r`. `r` and `x` may overlap.
  */
-static inline void
+static void
 gf256_square(uint32_t r[8], const uint32_t x[8])
 {
 	uint32_t r8, r10, r12, r14;
@@ -252,7 +252,7 @@ gf256_square(uint32_t r[8], const uint32_t x[8])
 /*
  * Invert `x` in GF(2^8) and write the result to `r`
  */
-static inline void
+static void
 gf256_inv(uint32_t r[8], uint32_t x[8])
 {
 	uint32_t y[8], z[8];
