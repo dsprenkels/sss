@@ -1,4 +1,4 @@
-#include "hazmat.c"
+#include "hazmat.h"
 #include <assert.h>
 #include <string.h>
 

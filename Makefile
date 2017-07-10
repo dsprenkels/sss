@@ -1,5 +1,5 @@
 CFLAGS = -Wall -g -O2
-SRCS = hazmat.c randombytes.c sss.c keccak.c tweetnacl.c
+SRCS = hazmat.c randombytes.c sss.c tweetnacl.c
 OBJS := ${SRCS:.c=.o}
 
 all: libsss.a
@@ -17,7 +17,7 @@ hazmat.o: CFLAGS += -funroll-loops
 	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS)
 	$(MEMCHECK) ./$@
 
-test_hazmat.out: $(filter-out hazmat.o,$(OBJS))
+test_hazmat.out: $(OBJS)
 test_sss.out: $(OBJS)
 
 .PHONY: check
