@@ -74,6 +74,7 @@ I have currently written bindings for the following languages:
 
 - [Node.js](https://github.com/dsprenkels/sss-node)
 - [Go](https://github.com/dsprenkels/sss-go)
+- [Rust](https://github.com/dsprenkels/sss-rs)
 
 ## Technical details
 
