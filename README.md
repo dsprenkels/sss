@@ -11,9 +11,9 @@ An example use case is a beer brewery which has a vault which conains their
 precious super secret recipe. The 5 board members of this brewery do not trust
 all the others well enough that they won't secretly break into the vault and
 sell the recipe to a competitor. So they split the code into 5 shares, and
-allow 3 shares to restore the original code. Now they are sure that the
-majority of the staff will know when the vault is opened, but they also don't
-need *all* the shares if they want to open the vault.
+allow 4 shares to restore the original code. Now they are sure that the
+majority of the staff will know when the vault is opened, but they can still
+open the vault when one of the staff members is abroad or sick at home.
 
 As often with crypto libraries, there is a lot of Shamir secret sharing code
 around that *does not meet cryptographic standards* (a.k.a. is insecure).
@@ -58,11 +58,11 @@ int main()
 		data[idx] = 42;
 	}
 
-	/* Split the secret into 5 shares (with a recombination theshold of 3) */
-	sss_create_shares(shares, data, 5, 3);
+	/* Split the secret into 5 shares (with a recombination theshold of 4) */
+	sss_create_shares(shares, data, 5, 4);
 
 	/* Combine some of the shares to restore the original secret */
-	tmp = sss_combine_shares(restored, shares, 3);
+	tmp = sss_combine_shares(restored, shares, 4);
 	assert(tmp == 0);
 	assert(memcmp(restored, data, sss_MLEN) == 0);
 }
