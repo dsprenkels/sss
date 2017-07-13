@@ -3,11 +3,11 @@
 [![Build Status](https://travis-ci.org/dsprenkels/sss.svg?branch=master)](https://travis-ci.org/dsprenkels/sss)
 
 `sss` is a library that exposes an API to split secret data buffers into
-a number of different _shares_. With the posession of some or all of these
+a number of different _shares_. With the possession of some or all of these
 shares, the original secret can be restored. It is the schoolbook example of
 a cryptographic _threshold scheme_.
 
-An example use case is a beer brewery which has a vault which conains their
+An example use case is a beer brewery which has a vault which contains their
 precious super secret recipe. The 5 board members of this brewery do not trust
 all the others well enough that they won't secretly break into the vault and
 sell the recipe to a competitor. So they split the code into 5 shares, and
