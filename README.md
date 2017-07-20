@@ -9,7 +9,7 @@ a cryptographic _threshold scheme_.
 
 ## Table of contents
 
-1. [Introduction](#What is it for?)
+1. [Introduction](#Introduction)
 2. [Download](#Download)
 3. [Usage](#Usage)
 	1. [Example](#Example)
