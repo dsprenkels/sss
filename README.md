@@ -9,14 +9,14 @@ a cryptographic _threshold scheme_.
 
 ## Table of contents
 
-1. [Introduction](#Introduction)
-2. [Download](#Download)
-3. [Usage](#Usage)
-	1. [Example](#Example)
-4. [Bindings](#Bindings)
-5. [Technical details](#Technical details)
-6. [Comparison of secret sharing libraries](#Comparison of secret sharing libraries)
-7. [Questions](#Questions)
+1. [Introduction](#introduction)
+2. [Download](#download)
+3. [Usage](#usage)
+	1. [Example](#example)
+4. [Bindings](#bindings)
+5. [Technical details](#technical-details)
+6. [Comparison of secret sharing libraries](#comparison-of-secret-sharing-libraries)
+7. [Questions](#questions)
 
 ## Introduction
 
