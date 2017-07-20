@@ -7,6 +7,18 @@ a number of different _shares_. With the possession of some or all of these
 shares, the original secret can be restored. It is the schoolbook example of
 a cryptographic _threshold scheme_.
 
+## Table of contents
+
+1. [Introduction](#What is it for?)
+2. [Download](#Download)
+3. [Usage](#Usage)
+	1. [Example](#Example)
+4. [Bindings](#Bindings)
+5. [Technical details](#Technical details)
+6. [Questions](#Questions)
+
+## Introduction
+
 An example use case is a beer brewery which has a vault which contains their
 precious super secret recipe. The 5 board members of this brewery do not trust
 all the others well enough that they won't secretly break into the vault and
@@ -28,6 +40,17 @@ With this in mind, I have made this library to:
 It should be safe to use this library in "the real world", but note that until
 the release of version 1.0 the API may be changed without backward
 compatibility.
+
+## Download
+
+Currently, I have not packaged this library yet, but I expect to do so very
+soon. If you are planning to use the library, please drop me an email and I will
+freeze the API spec. So for now you should use the following command to get the
+code:
+
+```shell
+git clone --recursive https://github.com/dsprenkels/sss.git
+```
 
 ## Usage
 
