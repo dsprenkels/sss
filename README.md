@@ -15,7 +15,8 @@ a cryptographic _threshold scheme_.
 	1. [Example](#Example)
 4. [Bindings](#Bindings)
 5. [Technical details](#Technical details)
-6. [Questions](#Questions)
+6. [Comparison of secret sharing libraries](#Comparison of secret sharing libraries)
+7. [Questions](#Questions)
 
 ## Introduction
 
@@ -125,6 +126,40 @@ Please only use this if you _really_ know what you are doing. Raw "textbook"
 Shamir secret sharing is only safe when using a uniformly random secret (with
 128 bits of entropy). Note also that it is entirely insecure for integrity.
 Please do not use the low-level API unless you _really_ have no other choice.
+
+## Comparison of secret-sharing libraries
+
+If you would like your library to be added here, please open a pull request. :)
+
+| Library         | Side-channels | Tamper-resistant | Secret length |
+|-----------------|---------------|------------------|---------------|
+| [B. Poettering] | Insecure¹     | Insecure         | 128 bytes     |
+| [libgfshare]    | Insecure      | Insecure         | ∞             |
+| [blockstack]    | ??²           | Insecure         | 160 bytes     |
+| [sssa-golang]   | Secure        | Secure³          | ∞             |
+| [sssa-ruby]     | ??²           | Secure³          | ∞             |
+| [snipsco]       | Secure        | Insecrure        | Note⁵         |
+| [dsprenkels]    | Secure        | Secure⁴          | 64 bytes      |
+
+### Notes
+
+1. Uses the GNU gmp library.
+2. This library is implemented in a high level scripting library which does not
+   guarantee that its basic operators execute in constant-time.
+3. Uses randomized *x*-coordinates.
+4. Uses randomized *y*-coordinates.
+5. When using the [snipsco] library you will have to specify your own prime.
+   Computation time is _O(p²)_, so on a normal computer you will be limited to
+   a secret size of ~1024 bytes.
+
+[B. Poettering]: http://point-at-infinity.org/ssss/
+[libgfshare]: http://www.digital-scurf.org/software/libgfshare
+[blockstack]: https://github.com/blockstack/secret-sharing
+[sssa-golang]: https://github.com/SSSaaS/sssa-golang
+[sssa-ruby]: https://github.com/SSSaaS/sssa-ruby
+[snipsco]: https://github.com/snipsco/rust-threshold-secret-sharing
+[dsprenkels]: https://github.com/dsprenkels/sss
+
 
 ## Questions
 
