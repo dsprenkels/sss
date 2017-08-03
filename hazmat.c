@@ -30,12 +30,6 @@ typedef struct {
 } ByteShare;
 
 
-extern void
-FIPS202_SHAKE256(const unsigned char *in, unsigned long long inLen,
-                 unsigned char *out, unsigned long long outLen);
-
-
-
 static void
 bitslice(uint32_t r[8], const uint8_t x[32])
 {
