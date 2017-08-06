@@ -38,9 +38,11 @@ With this in mind, I have made this library to:
 - Secure the shared secret with a MAC
 - Use the platform (OS) randomness source
 
-It should be safe to use this library in "the real world", but note that until
-the release of version 1.0 the API may be changed without backward
-compatibility.
+It should be safe to use this library in "the real world". I currently regard
+the API as being stable. Should there be any breaking changes, then I will
+update the version number conforming to the [semantic versioning spec][semver].
+
+[semver]: http://semver.org/
 
 ## Download
 
