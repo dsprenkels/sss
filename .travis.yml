@@ -28,7 +28,8 @@ addons:
     packages:
       - valgrind
 
-script:
+before_script:
   - if [[ "$USE_VALGRIND" ]]; then export MEMCHECK="valgrind -q --leak-check=full --error-exitcode=1"; fi
   - if [[ "$USE_ASAN" ]]; then export CFLAGS="-fsanitize=address -fno-omit-frame-pointer"; fi
-  - make && make check
+
+script: make && make check
