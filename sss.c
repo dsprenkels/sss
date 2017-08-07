@@ -82,9 +82,9 @@ void sss_create_shares(sss_Share *out, const unsigned char *data,
 
 	/* Build regular shares */
 	for (idx = 0; idx < n; idx++) {
-		memcpy(get_keyshare(&out[idx]), &keyshares[idx][0],
+		memcpy(get_keyshare((const sss_Share*) &out[idx]), &keyshares[idx][0],
 		sss_KEYSHARE_LEN);
-		memcpy(get_ciphertext(&out[idx]),
+		memcpy(get_ciphertext((const sss_Share*) &out[idx]),
 		       &c[crypto_secretbox_BOXZEROBYTES], sss_CLEN);
 	}
 }
@@ -121,7 +121,7 @@ int sss_combine_shares(uint8_t *data, const sss_Share *shares, uint8_t k)
 		memcpy(&keyshares[idx], get_keyshare(&shares[idx]),
 		       sss_KEYSHARE_LEN);
 	}
-	sss_combine_keyshares(key, keyshares, k);
+	sss_combine_keyshares(key, (const sss_Keyshare*) keyshares, k);
 
 	/* Decrypt the ciphertext */
 	memcpy(&c[crypto_secretbox_BOXZEROBYTES],
