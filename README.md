@@ -149,6 +149,11 @@ If you would like your library to be added here, please open a pull request. :)
 
 ### Notes
 
+It should be important to note that a limited secret length does not mean
+that it is impossible to share longer secrets. The way this is done is
+by secret sharing a random key and using this key to encrypt the real
+secret. This is a lot faster and had the security is not reduced.
+
 1. Uses the GNU gmp library.
 2. Uses lookup tables for GF(256) multiplication.
 3. This library is implemented in a high level scripting library which does not
