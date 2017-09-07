@@ -101,6 +101,10 @@ I have currently written bindings for the following languages:
 - [Node.js](https://github.com/dsprenkels/sss-node)
 - [Go](https://github.com/dsprenkels/sss-go)
 - [Rust](https://github.com/dsprenkels/sss-rs)
+- [Android](https://github.com/dsprenkels/sss-android)¹
+- [Haskell](https://github.com/dsprenkels/sss-hs)¹
+- [Swift](https://github.com/dsprenkels/sss-swift)¹
+> ¹ No releases yet.
 
 ## Technical details
 
@@ -145,6 +149,11 @@ If you would like your library to be added here, please open a pull request. :)
 | [c-sss]         | Insecure      | Insecure         | ∞             |
 
 ### Notes
+
+It should be important to note that a limited secret length does not mean
+that it is impossible to share longer secrets. The way this is done is
+by secret sharing a random key and using this key to encrypt the real
+secret. This is a lot faster and had the security is not reduced.
 
 1. Uses the GNU gmp library.
 2. Uses lookup tables for GF(256) multiplication.
