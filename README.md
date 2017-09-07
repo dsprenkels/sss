@@ -142,6 +142,7 @@ If you would like your library to be added here, please open a pull request. :)
 | [sssa-ruby]     | ??³           | Secure⁴          | ∞             |
 | [snipsco]       | Secure        | Insecure         | Note⁶         |
 | [dsprenkels]    | Secure        | Secure⁵          | 64 bytes      |
+| [c-sss]         | Insecure      | Insecure         | ∞             |
 
 ### Notes
 
@@ -162,6 +163,7 @@ If you would like your library to be added here, please open a pull request. :)
 [sssa-ruby]: https://github.com/SSSaaS/sssa-ruby
 [snipsco]: https://github.com/snipsco/rust-threshold-secret-sharing
 [dsprenkels]: https://github.com/dsprenkels/sss
+[c-sss]: https://github.com/fletcher/c-sss
 
 
 ## Questions
