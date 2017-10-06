@@ -145,7 +145,7 @@ If you would like your library to be added here, please open a pull request. :)
 | [sssa-golang]   | Secure        | Secure⁴          | ∞             |
 | [sssa-ruby]     | ??³           | Secure⁴          | ∞             |
 | [snipsco]       | Secure        | Insecure         | Note⁶         |
-| [c-sss]         | Insecure      | Insecure         | ∞             |
+| [c-sss]         | Insecure⁷     | Insecure         | ∞             |
 | [dsprenkels]    | Secure        | Secure⁵          | 64 bytes      |
 
 ### Notes
@@ -164,6 +164,7 @@ secret. This is a lot faster and had the security is not reduced.
 6. When using the [snipsco] library you will have to specify your own prime.
    Computation time is _O(p²)_, so on a normal computer you will be limited to
    a secret size of ~1024 bytes.
+7. As mentioned by the [documentation](https://github.com/fletcher/c-sss#security-issues).
 
 [B. Poettering]: http://point-at-infinity.org/ssss/
 [libgfshare]: http://www.digital-scurf.org/software/libgfshare
