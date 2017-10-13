@@ -5,7 +5,8 @@
 `sss` is a library that exposes an API to split secret data buffers into
 a number of different _shares_. With the possession of some or all of these
 shares, the original secret can be restored. It is the schoolbook example of
-a cryptographic _threshold scheme_. ([demo])
+a cryptographic _threshold scheme_. This library has a [command line
+interface](https://github.com/dsprenkels/sss). ([web demo])
 
 ## Table of contents
 
@@ -180,5 +181,5 @@ secret. This is a lot faster and had the security is not reduced.
 
 Feel free to send me an email on my Github associated e-mail address.
 
-[demo]: https://dsprenkels.com/sss/
+[web demo]: https://dsprenkels.com/sss/
 [randombytes]: https://github.com/dsprenkels/randombytes
