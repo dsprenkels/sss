@@ -6,7 +6,7 @@
 a number of different _shares_. With the possession of some or all of these
 shares, the original secret can be restored. It is the schoolbook example of
 a cryptographic _threshold scheme_. This library has a [command line
-interface](https://github.com/dsprenkels/sss). ([web demo])
+interface](https://github.com/dsprenkels/sss-cli). ([web demo])
 
 ## Table of contents
 
