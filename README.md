@@ -5,7 +5,8 @@
 `sss` is a library that exposes an API to split secret data buffers into
 a number of different _shares_. With the possession of some or all of these
 shares, the original secret can be restored. It is the schoolbook example of
-a cryptographic _threshold scheme_. ([demo])
+a cryptographic _threshold scheme_. This library has a [command line
+interface](https://github.com/dsprenkels/sss-cli). ([web demo])
 
 ## Table of contents
 
@@ -145,7 +146,7 @@ If you would like your library to be added here, please open a pull request. :)
 | [sssa-golang]   | Secure        | Secure⁴          | ∞             |
 | [sssa-ruby]     | ??³           | Secure⁴          | ∞             |
 | [snipsco]       | Secure        | Insecure         | Note⁶         |
-| [c-sss]         | Insecure      | Insecure         | ∞             |
+| [c-sss]         | Insecure⁷     | Insecure         | ∞             |
 | [dsprenkels]    | Secure        | Secure⁵          | 64 bytes      |
 
 ### Notes
@@ -164,6 +165,7 @@ secret. This is a lot faster and had the security is not reduced.
 6. When using the [snipsco] library you will have to specify your own prime.
    Computation time is _O(p²)_, so on a normal computer you will be limited to
    a secret size of ~1024 bytes.
+7. As mentioned by the [documentation](https://github.com/fletcher/c-sss#security-issues).
 
 [B. Poettering]: http://point-at-infinity.org/ssss/
 [libgfshare]: http://www.digital-scurf.org/software/libgfshare
@@ -179,5 +181,5 @@ secret. This is a lot faster and had the security is not reduced.
 
 Feel free to send me an email on my Github associated e-mail address.
 
-[demo]: https://dsprenkels.com/sss/
+[web demo]: https://dsprenkels.com/sss/
 [randombytes]: https://github.com/dsprenkels/randombytes
