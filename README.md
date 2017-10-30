@@ -6,7 +6,9 @@
 a number of different _shares_. With the possession of some or all of these
 shares, the original secret can be restored. It is the schoolbook example of
 a cryptographic _threshold scheme_. This library has a [command line
-interface](https://github.com/dsprenkels/sss-cli). ([web demo])
+interface][sss-cli]. ([web demo])
+
+[sss-cli]: https://github.com/dsprenkels/sss-cli
 
 ## Table of contents
 
@@ -154,7 +156,8 @@ If you would like your library to be added here, please open a pull request. :)
 It should be important to note that a limited secret length does not mean
 that it is impossible to share longer secrets. The way this is done is
 by secret sharing a random key and using this key to encrypt the real
-secret. This is a lot faster and had the security is not reduced.
+secret. This is a lot faster and had the security is not reduced. (This
+is actually how [sss-cli] produces variable-length shares.)
 
 1. Uses the GNU gmp library.
 2. Uses lookup tables for GF(256) multiplication.
