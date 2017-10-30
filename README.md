@@ -117,10 +117,10 @@ other terms are generated randomly. Then we can pick points on the polynomial
 by filling in values for _x_. Each point is put in a share. Afterwards, with _k_
 points we can use interpolation to restore a _k_-degree polynomial.
 
-In practice there is a wrapper around the secret-sharing part (this is
-done because of crypto-technical reasons). This wrapper uses the
-Salsa20/Poly1305 authenticated encryption scheme. Because of this, the
-shares are always a little bit larger than the original data.
+In practice there is a wrapper around the secret-sharing part (this is done
+because of crypto-technical reasons). This wrapper uses the XSalsa20/Poly1305
+authenticated encryption scheme. Because of this, the shares are always a little
+bit larger than the original data.
 
 This library uses a custom [`randombytes`][randombytes] function to generate a
 random encapsulation key, which talks directly to the operating system. When
