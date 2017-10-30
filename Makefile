@@ -1,4 +1,5 @@
-CFLAGS += -Wall -g -O2
+CFLAGS += -m64 -std=c99 -pedantic -Wall -Wshadow -Wpointer-arith -Wcast-qual \
+          -Wstrict-prototypes -Wmissing-prototypes -g -O2
 SRCS = hazmat.c randombytes.c sss.c tweetnacl.c
 OBJS := ${SRCS:.c=.o}
 

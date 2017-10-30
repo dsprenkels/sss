@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <string.h>
 
-int main()
+int main(void)
 {
 	unsigned char data[sss_MLEN] = { 42 }, restored[sss_MLEN];
 	sss_Share shares[256];
