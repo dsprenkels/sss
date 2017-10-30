@@ -38,20 +38,38 @@ static const unsigned char nonce[crypto_secretbox_NONCEBYTES] = { 0 };
 
 
 /*
- * Return a pointer to the ciphertext part of this Share
+ * Return a mutable pointer to the ciphertext part of this Share
  */
-static uint8_t* get_ciphertext(const sss_Share *share)
+static uint8_t* get_ciphertext(sss_Share *share)
 {
-	return (uint8_t*) &(*share)[sss_KEYSHARE_LEN];
+	return &((uint8_t*) share)[sss_KEYSHARE_LEN];
 }
 
 
 /*
- * Return a pointer to the Keyshare part of this Share
+ * Return a mutable pointer to the Keyshare part of this Share
  */
-static sss_Keyshare* get_keyshare(const sss_Share *share)
+static sss_Keyshare* get_keyshare(sss_Share *share)
 {
 	return (sss_Keyshare*) &share[0];
+}
+
+
+/*
+ * Return a const pointer to the ciphertext part of this Share
+ */
+static const uint8_t* get_ciphertext_const(const sss_Share *share)
+{
+	return &((const uint8_t*) share)[sss_KEYSHARE_LEN];
+}
+
+
+/*
+ * Return a const pointer to the Keyshare part of this Share
+ */
+static const sss_Keyshare* get_keyshare_const(const sss_Share *share)
+{
+	return (const sss_Keyshare*) &share[0];
 }
 
 
@@ -82,9 +100,9 @@ void sss_create_shares(sss_Share *out, const unsigned char *data,
 
 	/* Build regular shares */
 	for (idx = 0; idx < n; idx++) {
-		memcpy(get_keyshare((const sss_Share*) &out[idx]), &keyshares[idx][0],
+		memcpy(get_keyshare((sss_Share*) &out[idx]), &keyshares[idx][0],
 		sss_KEYSHARE_LEN);
-		memcpy(get_ciphertext((const sss_Share*) &out[idx]),
+		memcpy(get_ciphertext((sss_Share*) &out[idx]),
 		       &c[crypto_secretbox_BOXZEROBYTES], sss_CLEN);
 	}
 }
@@ -110,15 +128,15 @@ int sss_combine_shares(uint8_t *data, const sss_Share *shares, uint8_t k)
 	/* Check if all ciphertexts are the same */
 	if (k < 1) return -1;
 	for (idx = 1; idx < k; idx++) {
-		if (memcmp(get_ciphertext(&shares[0]),
-		           get_ciphertext(&shares[idx]), sss_CLEN) != 0) {
+		if (memcmp(get_ciphertext_const(&shares[0]),
+		           get_ciphertext_const(&shares[idx]), sss_CLEN) != 0) {
 			return -1;
 		}
 	}
 
 	/* Restore the key */
 	for (idx = 0; idx < k; idx++) {
-		memcpy(&keyshares[idx], get_keyshare(&shares[idx]),
+		memcpy(&keyshares[idx], get_keyshare_const(&shares[idx]),
 		       sss_KEYSHARE_LEN);
 	}
 	sss_combine_keyshares(key, (const sss_Keyshare*) keyshares, k);

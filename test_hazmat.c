@@ -3,7 +3,7 @@
 #include <string.h>
 
 
-static void test_key_shares()
+static void test_key_shares(void)
 {
 	uint8_t key[32], restored[32];
 	sss_Keyshare key_shares[256];
@@ -31,7 +31,7 @@ static void test_key_shares()
 }
 
 
-int main()
+int main(void)
 {
 	test_key_shares();
 	return 0;
