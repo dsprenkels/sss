@@ -171,7 +171,7 @@ actually how [sss-cli] produces variable-length shares.)
 7. As mentioned by the [documentation](https://github.com/fletcher/c-sss#security-issues).
 
 [B. Poettering]: http://point-at-infinity.org/ssss/
-[libgfshare]: http://www.digital-scurf.org/software/libgfshare
+[libgfshare]: https://github.com/jcushman/libgfshare
 [blockstack]: https://github.com/blockstack/secret-sharing
 [sssa-golang]: https://github.com/SSSaaS/sssa-golang
 [sssa-ruby]: https://github.com/SSSaaS/sssa-ruby
