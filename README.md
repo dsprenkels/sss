@@ -37,7 +37,7 @@ Some details—like integrity checks and side-channel resistance—are often
 forgotten. But these slip-ups can often fully compromise the security of the
 scheme.
 With this in mind, I have made this library to:
-- Be side channel resistant
+- Be side channel resistant (timing, branch, cache)
 - Secure the shared secret with a MAC
 - Use the platform (OS) randomness source
 
