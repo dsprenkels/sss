@@ -49,14 +49,18 @@ update the version number conforming to the [semantic versioning spec][semver].
 
 ## Download
 
-Currently, I have not packaged this library yet, but I expect to do so very
-soon. If you are planning to use the library, please drop me an email and I will
-freeze the API spec. So for now you should use the following command to get the
-code:
+I have released version 0.1.0 of this library, which can be downloaded from
+the [releases](https://github.com/dsprenkels/sss/releases) page. However, I
+actually recommend cloning the library with git, to also get the necesarry
+submodules:
 
 ```shell
 git clone --recursive https://github.com/dsprenkels/sss.git
 ```
+
+The current version is version 0.1.0, which should be stable enough for now.
+The functionality may still change before version 1.0.0, although I will
+still fix any security issues before that.
 
 ## Usage
 
