@@ -110,7 +110,7 @@ I have currently written bindings for the following languages:
 ## Technical details
 
 Shamir secret sharing works by generating a polynomial (e.g. _33x³ + 8x² + 29x +
-42_). The lowest term is the term is the secret and is just filled in. All the
+42_). The lowest term is the secret and is just filled in. All the
 other terms are generated randomly. Then we can pick points on the polynomial
 by filling in values for _x_. Each point is put in a share. Afterwards, with _k_
 points we can use interpolation to restore a _k_-degree polynomial.
@@ -123,7 +123,7 @@ shares are always a little bit larger than the original data.
 This library uses a custom [`randombytes`][randombytes] function to generate a
 random encapsulation key, which talks directly to the operating system. When
 using the high level API, you are not allowed to choose your own key. It _must_
-be uniformly random, because regularities in secret-shared can be exploited.
+be uniformly random, because regularities in shared secrets can be exploited.
 
 With the low level API (`hazmat.h`) you _can_ choose to secret-share a piece of
 data of exactly 32 bytes. This produces a set of shares that are much shorter
@@ -151,7 +151,7 @@ If you would like your library to be added here, please open a pull request. :)
 
 ### Notes
 
-It should be important to note that a limited secret length does not mean
+It is important to note that a limited secret length does not mean
 that it is impossible to share longer secrets. The way this is done is
 by secret sharing a random key and using this key to encrypt the real
 secret. This is a lot faster and had the security is not reduced.
