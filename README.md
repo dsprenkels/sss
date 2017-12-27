@@ -6,7 +6,9 @@
 a number of different _shares_. With the possession of some or all of these
 shares, the original secret can be restored. It is the schoolbook example of
 a cryptographic _threshold scheme_. This library has a [command line
-interface](https://github.com/dsprenkels/sss-cli). ([web demo])
+interface][sss-cli]. ([web demo])
+
+[sss-cli]: https://github.com/dsprenkels/sss-cli
 
 ## Table of contents
 
@@ -35,7 +37,7 @@ Some details—like integrity checks and side-channel resistance—are often
 forgotten. But these slip-ups can often fully compromise the security of the
 scheme.
 With this in mind, I have made this library to:
-- Be side channel resistant
+- Be side channel resistant (timing, branch, cache)
 - Secure the shared secret with a MAC
 - Use the platform (OS) randomness source
 
@@ -47,14 +49,18 @@ update the version number conforming to the [semantic versioning spec][semver].
 
 ## Download
 
-Currently, I have not packaged this library yet, but I expect to do so very
-soon. If you are planning to use the library, please drop me an email and I will
-freeze the API spec. So for now you should use the following command to get the
-code:
+I have released version 0.1.0 of this library, which can be downloaded from
+the [releases](https://github.com/dsprenkels/sss/releases) page. However, I
+actually recommend cloning the library with git, to also get the necesarry
+submodules:
 
 ```shell
 git clone --recursive https://github.com/dsprenkels/sss.git
 ```
+
+The current version is version 0.1.0, which should be stable enough for now.
+The functionality may still change before version 1.0.0, although I will
+still fix any security issues before that.
 
 ## Usage
 
@@ -115,10 +121,10 @@ other terms are generated randomly. Then we can pick points on the polynomial
 by filling in values for _x_. Each point is put in a share. Afterwards, with _k_
 points we can use interpolation to restore a _k_-degree polynomial.
 
-In practice there is a wrapper around the secret-sharing part (this is
-done because of crypto-technical reasons). This wrapper uses the
-Salsa20/Poly1305 authenticated encryption scheme. Because of this, the
-shares are always a little bit larger than the original data.
+In practice there is a wrapper around the secret-sharing part (this is done
+because of crypto-technical reasons). This wrapper uses the XSalsa20/Poly1305
+authenticated encryption scheme. Because of this, the shares are always a little
+bit larger than the original data.
 
 This library uses a custom [`randombytes`][randombytes] function to generate a
 random encapsulation key, which talks directly to the operating system. When
@@ -154,7 +160,8 @@ If you would like your library to be added here, please open a pull request. :)
 It is important to note that a limited secret length does not mean
 that it is impossible to share longer secrets. The way this is done is
 by secret sharing a random key and using this key to encrypt the real
-secret. This is a lot faster and had the security is not reduced.
+secret. This is a lot faster and the security is not reduced. (This is
+actually how [sss-cli] produces variable-length shares.)
 
 1. Uses the GNU gmp library.
 2. Uses lookup tables for GF(256) multiplication.
@@ -168,7 +175,7 @@ secret. This is a lot faster and had the security is not reduced.
 7. As mentioned by the [documentation](https://github.com/fletcher/c-sss#security-issues).
 
 [B. Poettering]: http://point-at-infinity.org/ssss/
-[libgfshare]: http://www.digital-scurf.org/software/libgfshare
+[libgfshare]: https://github.com/jcushman/libgfshare
 [blockstack]: https://github.com/blockstack/secret-sharing
 [sssa-golang]: https://github.com/SSSaaS/sssa-golang
 [sssa-ruby]: https://github.com/SSSaaS/sssa-ruby
