@@ -1,8 +1,7 @@
 CFLAGS += -g -O2 -m64 -std=c99 -pedantic \
 	-Wall -Wshadow -Wpointer-arith -Wcast-qual -Wformat -Wformat-security \
 	-Werror=format-security -Wstrict-prototypes -Wmissing-prototypes \
-	-D_FORTIFY_SOURCE=2 -fstack-protector-strong --param ssp-buffer-size=4 \
-	-fPIC -fno-strict-overflow
+	-D_FORTIFY_SOURCE=2 -fPIC -fno-strict-overflow
 SRCS = hazmat.c randombytes.c sss.c tweetnacl.c
 OBJS := ${SRCS:.c=.o}
 
