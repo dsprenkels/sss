@@ -153,6 +153,7 @@ If you would like your library to be added here, please open a pull request. :)
 | [sssa-ruby]     | ??³           | Secure⁴          | ∞             |
 | [snipsco]       | Secure        | Insecure         | Note⁶         |
 | [c-sss]         | Insecure⁷     | Insecure         | ∞             |
+| [timtiemens]    | Insecure⁸     | Note⁹            | 512 bytes     |
 | [dsprenkels]    | Secure        | Secure⁵          | 64 bytes      |
 
 ### Notes
@@ -173,6 +174,14 @@ actually how [sss-cli] produces variable-length shares.)
    Computation time is _O(p²)_, so on a normal computer you will be limited to
    a secret size of ~1024 bytes.
 7. As mentioned by the [documentation](https://github.com/fletcher/c-sss#security-issues).
+8. Uses Java `BigInteger` class.
+9. Basic usage of this tool does not protect the integrity of the secrets.
+   However, the project's readme file advises the user to use a hybrid
+   encryption scheme and secret share the key. Through destroying the ephemeral
+   key, the example that is listed in the readme file protects prevents an
+   attacker from arbitrarly inserting a secret. However, inserting a garbled
+   secret is still possible. To prevent this the user should use a AEAD scheme
+   (like AES-GCM or ChaCha20-Poly1305) instead of AES-CBC.
 
 [B. Poettering]: http://point-at-infinity.org/ssss/
 [libgfshare]: https://github.com/jcushman/libgfshare
@@ -181,6 +190,7 @@ actually how [sss-cli] produces variable-length shares.)
 [sssa-ruby]: https://github.com/SSSaaS/sssa-ruby
 [snipsco]: https://github.com/snipsco/rust-threshold-secret-sharing
 [c-sss]: https://github.com/fletcher/c-sss
+[timtiemens]: https://github.com/timtiemens/secretshare
 [dsprenkels]: https://github.com/dsprenkels/sss
 
 
