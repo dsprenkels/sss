@@ -179,7 +179,7 @@ actually how [sss-cli] produces variable-length shares.)
    However, the project's readme file advises the user to use a hybrid
    encryption scheme and secret share the key. Through destroying the ephemeral
    key, the example that is listed in the readme file protects prevents an
-   attacker from arbitrarly inserting a secret. However, inserting a garbled
+   attacker from arbitrarily inserting a secret. However, inserting a garbled
    secret is still possible. To prevent this the user should use a AEAD scheme
    (like AES-GCM or ChaCha20-Poly1305) instead of AES-CBC.
 
@@ -196,7 +196,48 @@ actually how [sss-cli] produces variable-length shares.)
 
 ## Questions
 
-Feel free to send me an email on my Github associated e-mail address.
+### I do not know a lot about secret sharing. Is Shamir secret sharing useful for me?
+
+It depends. In the case of threshold schemes (that's what this is) there are
+two types:
+
+1. The share-holders _cannot_ verify that their shares are valid.
+2. The share-holders _can_ verify that their shares are valid.
+
+Shamir's scheme is of the first type. This immediately implies that the dealer
+could cheat. Indeed, they can distribute a number of shares which are just
+random strings. The only way the participants could know is by banding together
+and trying to restore the secret. This would show the secret, which would make
+the scheme totally pointless.
+
+**Use Shamir secret sharing only if the dealer _and_ the participants have no
+reason to corrupt any shares.**
+
+Examples where this is _not_ the case:
+
+- When the secret hides something that is embarrasing for one of the
+  participants.
+- When the shared secret is something like a testament, and the participants
+  are the heirs. If one of the heirs inherits more wealth when the secret is
+  not disclosed, they can corrupt their share (and it would be impossible to
+  check this from the share alone).
+
+In these cases, you will need a scheme of the second type. See the next
+question.
+
+### Wait, I need verifiable shares! What should I use instead?
+
+There are two straightforward options:
+
+1. When the secret is fully random—for example, a cryptographic key—use
+   **Feldman verifiable secret sharing**.
+2. When the secret is not fully random—it _could_ be a message, a number,
+   etc.—use **Pedersen verifiable secret sharing**.
+
+### Other
+
+For other questions, feel free to open an issue or send me an email on my Github
+associated e-mail address.
 
 [web demo]: https://dsprenkels.com/sss/
 [randombytes]: https://github.com/dsprenkels/randombytes
