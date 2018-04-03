@@ -179,7 +179,7 @@ actually how [sss-cli] produces variable-length shares.)
    However, the project's readme file advises the user to use a hybrid
    encryption scheme and secret share the key. Through destroying the ephemeral
    key, the example that is listed in the readme file protects prevents an
-   attacker from arbitrarly inserting a secret. However, inserting a garbled
+   attacker from arbitrarily inserting a secret. However, inserting a garbled
    secret is still possible. To prevent this the user should use a AEAD scheme
    (like AES-GCM or ChaCha20-Poly1305) instead of AES-CBC.
 
