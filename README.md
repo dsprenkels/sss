@@ -201,8 +201,8 @@ actually how [sss-cli] produces variable-length shares.)
 It depends. In the case of threshold schemes (that's what this is) there are
 two types:
 
-2. The share-holders _cannot_ verify that their shares are valid.
-1. The share-holders _can_ verify that their shares are valid.
+1. The share-holders _cannot_ verify that their shares are valid.
+2. The share-holders _can_ verify that their shares are valid.
 
 Shamir's scheme is of the first type. This immediately implies that the dealer
 could cheat. Indeed, they can distribute a number of shares which are just
