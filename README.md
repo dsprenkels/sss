@@ -205,7 +205,7 @@ two types:
 1. The share-holders _can_ verify that their shares are valid.
 
 Shamir's scheme is of the first type. This immediately implies that the dealer
-could cheat. Indeed, they can distribute a number of shares which are are just
+could cheat. Indeed, they can distribute a number of shares which are just
 random strings. The only way the participants could know is by banding together
 and trying to restore the secret. This would show the secret, which would make
 the scheme totally pointless.
