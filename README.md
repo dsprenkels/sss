@@ -239,5 +239,5 @@ There are two straightforward options:
 For other questions, feel free to open an issue or send me an email on my Github
 associated e-mail address.
 
-[web demo]: https://dsprenkels.com/sss/
+[web demo]: http://bakaoh.com/sss-wasm/
 [randombytes]: https://github.com/dsprenkels/randombytes
