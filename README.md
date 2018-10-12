@@ -68,7 +68,7 @@ Secrets are provided as arrays of 64 bytes long. This should be big enough to
 store generally small secrets. If you wish to split larger chunks of data, you
 can use symmetric encryption and split the key instead. Shares are generated
 from secret data using `sss_create_shares` and shares can be combined again
-using the `sss_combine_shares` functions. The shares are a octet strings of
+using the `sss_combine_shares` functions. The shares are octet strings of
 113 bytes each.
 
 ### Example
