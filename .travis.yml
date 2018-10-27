@@ -13,9 +13,6 @@ env:
   - USE_ASAN=1
 
 matrix:
-  allow_failures:
-    - os: linux
-      env: USE_ASAN=1
   exclude:
     - compiler: gcc
       env: USE_ASAN=1
