@@ -5,7 +5,7 @@ CFLAGS += -g -O2 -m64 -std=c99 -pedantic \
 SRCS = hazmat.c randombytes.c sss.c tweetnacl.c
 OBJS := ${SRCS:.c=.o}
 
-all: libsss.a
+all: libsss.a sss-create sss-restore
 
 libsss.a: randombytes/librandombytes.a $(OBJS)
 	$(AR) -rcs libsss.a $^
@@ -22,6 +22,12 @@ hazmat.o: CFLAGS += -funroll-loops
 
 test_hazmat.out: $(OBJS)
 test_sss.out: $(OBJS)
+
+sss-create: sss-create.c libsss.a
+	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS)
+
+sss-restore: sss-restore.c libsss.a
+	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS)
 
 .PHONY: check
 check: test_hazmat.out test_sss.out
