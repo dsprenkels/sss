@@ -36,6 +36,10 @@ int main(int argc, char **argv) {
     snprintf(fname+strlen(argv[3]), 21, "%016x.sss", (int) i);
     fprintf(stderr,"[>] writing share %ld to %s\n", i, fname);
     f=fopen(fname,"w");
+    if(f==NULL) {
+      fprintf(stderr,"could not open %s\nabort\n", fname);
+      exit(1);
+    }
     fwrite(shares[i], sizeof(sss_Share), 1, f);
     fclose(f);
   }
