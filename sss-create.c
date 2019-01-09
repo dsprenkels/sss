@@ -40,7 +40,10 @@ int main(int argc, char **argv) {
       fprintf(stderr,"could not open %s\nabort\n", fname);
       exit(1);
     }
-    fwrite(shares[i], sizeof(sss_Share), 1, f);
+    if(fwrite(shares[i], sizeof(sss_Share), 1, f)!=1) {
+      fprintf(stderr,"failed to write share to %s\nabort\n", fname);
+      exit(1);
+    }
     fclose(f);
   }
 
