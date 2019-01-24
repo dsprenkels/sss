@@ -108,6 +108,7 @@ I have currently written bindings for the following languages:
 - [Node.js](https://github.com/dsprenkels/sss-node)
 - [Go](https://github.com/dsprenkels/sss-go)
 - [Rust](https://github.com/dsprenkels/sss-rs)
+- [WASM](https://github.com/3box/sss-wasm)
 - [Android](https://github.com/dsprenkels/sss-android)¹
 - [Haskell](https://github.com/dsprenkels/sss-hs)¹
 - [Swift](https://github.com/dsprenkels/sss-swift)¹
