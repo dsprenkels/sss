@@ -87,7 +87,7 @@ int main()
 	int tmp;
 
 	/* Create a message [42, 42, ..., 42] */
-	for (idx = 0; idx < sizeof(data), ++idx) {
+	for (idx = 0; idx < sizeof(data); ++idx) {
 		data[idx] = 42;
 	}
 
