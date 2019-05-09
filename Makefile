@@ -13,7 +13,7 @@ libsss.a: randombytes/librandombytes.a $(OBJS)
 		$(AR) -rcs libsss.a $^
     endif
     ifeq ($(UNAME_S),Darwin)
-        libtool -static -o libsss.a $^
+		libtool -static -o libsss.a $^
     endif
 
 randombytes/librandombytes.a:
