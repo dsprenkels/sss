@@ -8,7 +8,7 @@ OBJS := ${SRCS:.c=.o}
 all: libsss.a
 
 libsss.a: randombytes/librandombytes.a $(OBJS)
-	$(AR) -rcs libsss.a $^
+	libtool -static -o libsss.a $^
 
 randombytes/librandombytes.a:
 	$(MAKE) -C randombytes librandombytes.a
