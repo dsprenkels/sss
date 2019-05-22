@@ -74,6 +74,13 @@ using the `sss_combine_shares` functions. The shares are octet strings of
 This library is implemented in such a way that the maximum number of shares
 is 255.
 
+Moreover, every share includes an ID, which is implemented as a counter.
+This ID is not considered a secret by the library, and an participants may be
+able to infer the amount of shares from these ids (for example, if I have a
+share with ID=3, I expect that ID∈{1,2} will also exist.
+If you require random share IDs, then you should generate 255 different
+shares, and randomly throw away the excess shares.
+
 ### Example
 
 ```c
