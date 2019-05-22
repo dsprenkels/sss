@@ -4,11 +4,17 @@ CFLAGS += -g -O2 -m64 -std=c99 -pedantic \
 	-D_FORTIFY_SOURCE=2 -fPIC -fno-strict-overflow
 SRCS = hazmat.c randombytes.c sss.c tweetnacl.c
 OBJS := ${SRCS:.c=.o}
+UNAME_S := $(shell uname -s)
 
 all: libsss.a
 
 libsss.a: randombytes/librandombytes.a $(OBJS)
-	$(AR) -rcs libsss.a $^
+    ifeq ($(UNAME_S),Linux)
+		$(AR) -rcs libsss.a $^
+    endif
+    ifeq ($(UNAME_S),Darwin)
+		libtool -static -o libsss.a $^
+    endif
 
 randombytes/librandombytes.a:
 	$(MAKE) -C randombytes librandombytes.a
