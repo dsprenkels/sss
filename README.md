@@ -71,6 +71,9 @@ from secret data using `sss_create_shares` and shares can be combined again
 using the `sss_combine_shares` functions. The shares are octet strings of
 113 bytes each.
 
+This library is implemented in such a way that the maximum number of shares
+is 255.
+
 ### Example
 
 ```c
