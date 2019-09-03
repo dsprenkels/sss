@@ -96,15 +96,13 @@ int main()
 	size_t idx;
 	int tmp;
 
-	/* Create a message [42, 42, ..., 42] */
-	for (idx = 0; idx < sizeof(data); ++idx) {
-		data[idx] = 42;
-	}
+	// Read a message to be shared
+	strncpy(data, "Tyler Durden isn't real.", sizeof(data));
 
-	/* Split the secret into 5 shares (with a recombination theshold of 4) */
+	// Split the secret into 5 shares (with a recombination theshold of 4)
 	sss_create_shares(shares, data, 5, 4);
 
-	/* Combine some of the shares to restore the original secret */
+	// Combine some of the shares to restore the original secret
 	tmp = sss_combine_shares(restored, shares, 4);
 	assert(tmp == 0);
 	assert(memcmp(restored, data, sss_MLEN) == 0);
