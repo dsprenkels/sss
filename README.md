@@ -122,6 +122,10 @@ I have currently written bindings for the following languages:
 - [Swift](https://github.com/dsprenkels/sss-swift)¹
 > ¹ No releases yet.
 
+There are also contributed bindings:
+
+- [Nim](https://github.com/markspanbroek/sss.nim)
+
 ## Technical details
 
 Shamir secret sharing works by generating a polynomial (e.g. _33x³ + 8x² + 29x +
