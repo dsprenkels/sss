@@ -254,3 +254,22 @@ associated e-mail address.
 
 [web demo]: http://bakaoh.com/sss-wasm/
 [randombytes]: https://github.com/dsprenkels/randombytes
+
+### Endnotes
+
+Here are some other software that uses the same algorithm, in case you need it.
+
+- https://github.com/SSSaaS
+- https://github.com/ronreiter/multicrypt (Python)
+- https://github.com/klingebj/shamir_bip39_2039 (Python)
+- https://github.com/seancomeau/ShamirSecretSharing (Python)
+- https://github.com/szymekk/shamirs_secret_sharing (Python)
+- https://github.com/pcrain/pyshamir (Python)
+- https://github.com/myd1/Shamir-s-Secret-Sharing (Python)
+- https://github.com/nijynot/shamir (JS)
+- https://github.com/mdciotti/polypass (JS)
+- https://github.com/agl/shamirsplit (Go)
+- https://github.com/itslab-kyushu/sss (Go)
+- https://github.com/iowaguy/shamir-secret-sharing (Go)
+- https://github.com/republicprotocol/shamir-go (Go)
+- https://github.com/amousa11/sss (Go)
