@@ -40,7 +40,7 @@ bitslice(uint32_t r[8], const uint8_t x[32])
 	for (arr_idx = 0; arr_idx < 32; arr_idx++) {
 		cur = (uint32_t) x[arr_idx];
 		for (bit_idx = 0; bit_idx < 8; bit_idx++) {
-			r[bit_idx] |= ((cur & (1 << bit_idx)) >> bit_idx) << arr_idx;
+			r[bit_idx] |= ((cur >> bit_idx) & 1) << arr_idx;
 		}
 	}
 }
@@ -56,7 +56,7 @@ unbitslice(uint8_t r[32], const uint32_t x[8])
 	for (bit_idx = 0; bit_idx < 8; bit_idx++) {
 		cur = (uint32_t) x[bit_idx];
 		for (arr_idx = 0; arr_idx < 32; arr_idx++) {
-			r[arr_idx] |= ((cur & (1 << arr_idx)) >> arr_idx) << bit_idx;
+			r[arr_idx] |= ((cur >> arr_idx) & 1) << bit_idx;
 		}
 	}
 }
