@@ -16,6 +16,7 @@ interface][sss-cli]. ([web demo])
 2. [Download](#download)
 3. [Usage](#usage)
 	1. [Example](#example)
+  	2. [How to Run Program (above)](#How-to-Run-program-(above))
 4. [Bindings](#bindings)
 5. [Technical details](#technical-details)
 6. [Comparison of secret sharing libraries](#comparison-of-secret-sharing-libraries)
@@ -107,6 +108,30 @@ int main()
 	assert(tmp == 0);
 	assert(memcmp(restored, data, sss_MLEN) == 0);
 }
+```
+
+## How to Run program (above)
+
+1. clone from git by bellow command. (As It is recommended. If you clone make sure that file under subdirectory also came with it)
+```shell
+git clone --recursive https://github.com/dsprenkels/sss.git
+```
+
+2. go inside sss directory and run make command
+```shell
+make
+```
+
+3. copy the example provided in readme as above and save it as demo.c
+
+4. compile demo.c by running bellow commnad
+```shell
+gcc demo.c -o demo randombytes.o sss.o hazmat.o tweetnacl.o
+```
+
+5. execute program by bellow command
+```shell
+./demo
 ```
 
 ## Bindings
