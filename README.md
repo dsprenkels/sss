@@ -150,6 +150,7 @@ I have currently written bindings for the following languages:
 There are also contributed bindings:
 
 - [Nim](https://github.com/markspanbroek/sss.nim)
+- [Erlang](https://github.com/arekinath/esss)
 
 ## Technical details
 
