@@ -138,7 +138,7 @@ gcc demo.c -o demo randombytes.o sss.o hazmat.o tweetnacl.o
 
 I have currently written bindings for the following languages:
 
-- [Node.js](https://github.com/dsprenkels/sss-node)
+- [Node.js](https://github.com/dsprenkels/sss-node) (currently outdated, see [sss-node/#11](https://github.com/dsprenkels/sss-node/issues/11>))
 - [Go](https://github.com/dsprenkels/sss-go)
 - [Rust](https://github.com/dsprenkels/sss-rs)
 - [WASM](https://github.com/3box/sss-wasm)
