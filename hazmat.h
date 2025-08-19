@@ -8,22 +8,18 @@
  * intermediate level API. You have been warned!
  */
 
-
 #ifndef sss_HAZMAT_H_
 #define sss_HAZMAT_H_
 
 #include <inttypes.h>
 
-
 #define sss_KEYSHARE_LEN 33 /* 1 + 32 */
-
 
 /*
  * One share of a cryptographic key which is shared using Shamir's
  * the `sss_create_keyshares` function.
  */
 typedef uint8_t sss_Keyshare[sss_KEYSHARE_LEN];
-
 
 /*
  * Share the secret given in `key` into `n` shares with a treshold value given
@@ -43,7 +39,6 @@ void sss_create_keyshares(sss_Keyshare *out,
                           const uint8_t key[32],
                           uint8_t n,
                           uint8_t k);
-
 
 /*
  * Combine the `k` shares provided in `shares` and write the resulting key to
@@ -66,5 +61,29 @@ void sss_combine_keyshares(uint8_t key[32],
                            const sss_Keyshare *shares,
                            uint8_t k);
 
+/**
+ * @brief Adds two sss_Keyshares together.
+ * share1[0] = share2[0]
+ * share1[1-31] = share1[1-31] + share2[1-31]
+ *
+ * This function takes two sss_Keyshares as input and adds them together.
+ * The result is stored in the first share (share1).
+ *
+ * @param share1 The first sss_Keyshare, which will also hold the result.
+ * @param share2 The second sss_Keyshare to be added to the first share.
+ */
+int add_two_Keyshare(sss_Keyshare share1, const sss_Keyshare share2);
 
+/**
+ * @brief Adds two sets of sss_Keyshares.
+ *
+ * This function takes two arrays of sss_Keyshares and adds them together.
+ * The result is stored in the first array of shares.
+ *
+ * @param shares1 A pointer to the first array of sss_Keyshares. This array will be modified to store the result.
+ * @param shares2 A pointer to the second array of sss_Keyshares.
+ * @param n The number of shares in each array.
+ * @return An integer indicating the success or failure of the operation.
+ */
+int add_Keyshares(sss_Keyshare *shares1, sss_Keyshare *shares2, unsigned char n);
 #endif /* sss_HAZMAT_H_ */

@@ -17,18 +17,16 @@
  * lookup operations, as all proper crypto code must be.
  */
 
-
 #include "randombytes.h"
 #include "hazmat.h"
 #include <assert.h>
 #include <string.h>
 
-
-typedef struct {
+typedef struct
+{
 	uint8_t x;
 	uint8_t y;
 } ByteShare;
-
 
 static void
 bitslice(uint32_t r[8], const uint8_t x[32])
@@ -37,14 +35,15 @@ bitslice(uint32_t r[8], const uint8_t x[32])
 	uint32_t cur;
 
 	memset(r, 0, sizeof(uint32_t[8]));
-	for (arr_idx = 0; arr_idx < 32; arr_idx++) {
-		cur = (uint32_t) x[arr_idx];
-		for (bit_idx = 0; bit_idx < 8; bit_idx++) {
+	for (arr_idx = 0; arr_idx < 32; arr_idx++)
+	{
+		cur = (uint32_t)x[arr_idx];
+		for (bit_idx = 0; bit_idx < 8; bit_idx++)
+		{
 			r[bit_idx] |= ((cur >> bit_idx) & 1) << arr_idx;
 		}
 	}
 }
-
 
 static void
 unbitslice(uint8_t r[32], const uint32_t x[8])
@@ -53,24 +52,25 @@ unbitslice(uint8_t r[32], const uint32_t x[8])
 	uint32_t cur;
 
 	memset(r, 0, sizeof(uint8_t[32]));
-	for (bit_idx = 0; bit_idx < 8; bit_idx++) {
-		cur = (uint32_t) x[bit_idx];
-		for (arr_idx = 0; arr_idx < 32; arr_idx++) {
+	for (bit_idx = 0; bit_idx < 8; bit_idx++)
+	{
+		cur = (uint32_t)x[bit_idx];
+		for (arr_idx = 0; arr_idx < 32; arr_idx++)
+		{
 			r[arr_idx] |= ((cur >> arr_idx) & 1) << bit_idx;
 		}
 	}
 }
 
-
 static void
 bitslice_setall(uint32_t r[8], const uint8_t x)
 {
 	size_t idx;
-	for (idx = 0; idx < 8; idx++) {
-		r[idx] = ((int32_t) ((x & (1 << idx)) << (31 - idx))) >> 31;
+	for (idx = 0; idx < 8; idx++)
+	{
+		r[idx] = ((int32_t)((x & (1 << idx)) << (31 - idx))) >> 31;
 	}
 }
-
 
 /*
  * Add (XOR) `r` with `x` and store the result in `r`.
@@ -79,9 +79,9 @@ static void
 gf256_add(uint32_t r[8], const uint32_t x[8])
 {
 	size_t idx;
-	for (idx = 0; idx < 8; idx++) r[idx] ^= x[idx];
+	for (idx = 0; idx < 8; idx++)
+		r[idx] ^= x[idx];
 }
-
 
 /*
  * Safely multiply two bitsliced polynomials in GF(2^8) reduced by
@@ -198,7 +198,6 @@ gf256_mul(uint32_t r[8], const uint32_t a[8], const uint32_t b[8])
 	r[7] ^= a2[0] & b[7];
 }
 
-
 /*
  * Square `x` in GF(2^8) and write the result to `r`. `r` and `x` may overlap.
  */
@@ -210,30 +209,30 @@ gf256_square(uint32_t r[8], const uint32_t x[8])
 	 * Assignments are done from 7 downto 0, because this allows the user
 	 * to execute this function in-place (e.g. `gf256_square(r, r);`).
 	 */
-	r14  = x[7];
-	r12  = x[6];
-	r10  = x[5];
-	r8   = x[4];
+	r14 = x[7];
+	r12 = x[6];
+	r10 = x[5];
+	r8 = x[4];
 	r[6] = x[3];
 	r[4] = x[2];
 	r[2] = x[1];
 	r[0] = x[0];
 
 	/* Reduce with  x^8 + x^4 + x^3 + x + 1 until order is less than 8 */
-	r[7]  = r14;  /* r[7] was 0 */
+	r[7] = r14; /* r[7] was 0 */
 	r[6] ^= r14;
-	r10  ^= r14;
+	r10 ^= r14;
 	/* Skip, because r13 is always 0 */
 	r[4] ^= r12;
-	r[5]  = r12;  /* r[5] was 0 */
+	r[5] = r12; /* r[5] was 0 */
 	r[7] ^= r12;
-	r8   ^= r12;
+	r8 ^= r12;
 	/* Skip, because r11 is always 0 */
 	r[2] ^= r10;
-	r[3]  = r10; /* r[3] was 0 */
+	r[3] = r10; /* r[3] was 0 */
 	r[5] ^= r10;
 	r[6] ^= r10;
-	r[1]  = r14; /* r[1] was 0 */
+	r[1] = r14;	 /* r[1] was 0 */
 	r[2] ^= r14; /* Substitute r9 by r14 because they will always be equal*/
 	r[4] ^= r14;
 	r[5] ^= r14;
@@ -242,7 +241,6 @@ gf256_square(uint32_t r[8], const uint32_t x[8])
 	r[3] ^= r8;
 	r[4] ^= r8;
 }
-
 
 /*
  * Invert `x` in GF(2^8) and write the result to `r`
@@ -265,17 +263,15 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 	gf256_mul(r, r, y); // r = x^254
 }
 
-
 /*
  * Create `k` key shares of the key given in `key`. The caller has to ensure
  * that the array `out` has enough space to hold at least `n` sss_Keyshare
  * structs.
  */
- void
- sss_create_keyshares(sss_Keyshare *out,
-                      const uint8_t key[32],
-                      uint8_t n,
-                      uint8_t k)
+void sss_create_keyshares(sss_Keyshare *out,
+						  const uint8_t key[32],
+						  uint8_t n,
+						  uint8_t k)
 {
 	/* Check if the parameters are valid */
 	assert(n != 0);
@@ -283,15 +279,16 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 	assert(k <= n);
 
 	uint8_t share_idx, coeff_idx, unbitsliced_x;
-	uint32_t poly0[8], poly[k-1][8], x[8], y[8], xpow[8], tmp[8];
+	uint32_t poly0[8], poly[k - 1][8], x[8], y[8], xpow[8], tmp[8];
 
 	/* Put the secret in the bottom part of the polynomial */
 	bitslice(poly0, key);
 
 	/* Generate the other terms of the polynomial */
-	randombytes((void*) poly, sizeof(poly));
+	randombytes((void *)poly, sizeof(poly));
 
-	for (share_idx = 0; share_idx < n; share_idx++) {
+	for (share_idx = 0; share_idx < n; share_idx++)
+	{
 		/* x value is in 1..n */
 		unbitsliced_x = share_idx + 1;
 		out[share_idx][0] = unbitsliced_x;
@@ -302,7 +299,8 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 		memset(xpow, 0, sizeof(xpow));
 		xpow[0] = ~0;
 		gf256_add(y, poly0);
-		for (coeff_idx = 0; coeff_idx < (k-1); coeff_idx++) {
+		for (coeff_idx = 0; coeff_idx < (k - 1); coeff_idx++)
+		{
 			gf256_mul(xpow, xpow, x);
 			gf256_mul(tmp, xpow, poly[coeff_idx]);
 			gf256_add(y, tmp);
@@ -311,14 +309,13 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 	}
 }
 
-
 /*
  * Restore the `k` sss_Keyshare structs given in `shares` and write the result
  * to `key`.
  */
- void sss_combine_keyshares(uint8_t key[32],
-                            const sss_Keyshare *key_shares,
-                            uint8_t k)
+void sss_combine_keyshares(uint8_t key[32],
+						   const sss_Keyshare *key_shares,
+						   uint8_t k)
 {
 	size_t share_idx, idx1, idx2;
 	uint32_t xs[k][8], ys[k][8];
@@ -326,28 +323,83 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 	uint32_t secret[8] = {0};
 
 	/* Collect the x and y values */
-	for (share_idx = 0; share_idx < k; share_idx++) {
+	for (share_idx = 0; share_idx < k; share_idx++)
+	{
 		bitslice_setall(xs[share_idx], key_shares[share_idx][0]);
 		bitslice(ys[share_idx], &key_shares[share_idx][1]);
 	}
 
 	/* Use Lagrange basis polynomials to calculate the secret coefficient */
-	for (idx1 = 0; idx1 < k; idx1++) {
+	for (idx1 = 0; idx1 < k; idx1++)
+	{
 		memset(num, 0, sizeof(num));
 		memset(denom, 0, sizeof(denom));
-		num[0] = ~0; /* num is the numerator (=1) */
+		num[0] = ~0;   /* num is the numerator (=1) */
 		denom[0] = ~0; /* denom is the numerator (=1) */
-		for (idx2 = 0; idx2 < k; idx2++) {
-			if (idx1 == idx2) continue;
+		for (idx2 = 0; idx2 < k; idx2++)
+		{
+			if (idx1 == idx2)
+				continue;
 			gf256_mul(num, num, xs[idx2]);
 			memcpy(tmp, xs[idx1], sizeof(uint32_t[8]));
 			gf256_add(tmp, xs[idx2]);
 			gf256_mul(denom, denom, tmp);
 		}
-		gf256_inv(tmp, denom); /* inverted denominator */
-		gf256_mul(num, num, tmp); /* basis polynomial */
+		gf256_inv(tmp, denom);		   /* inverted denominator */
+		gf256_mul(num, num, tmp);	   /* basis polynomial */
 		gf256_mul(num, num, ys[idx1]); /* scaled coefficient */
 		gf256_add(secret, num);
 	}
 	unbitslice(key, secret);
+}
+
+/**
+ * @brief Adds two sss_Keyshares together.
+ * share1[0] = share2[0]
+ * share1[1-31] = share1[1-31] + share2[1-31]
+ *
+ * This function takes two sss_Keyshares as input and adds them together.
+ * The result is stored in the first share (share1).
+ *
+ * @param share1 The first sss_Keyshare, which will also hold the result.
+ * @param share2 The second sss_Keyshare to be added to the first share.
+ */
+int add_two_Keyshare(sss_Keyshare share1, const sss_Keyshare share2)
+{
+	if (share1[0] != share2[0])
+	{
+		printf("shares1[0] : %d\n", share1[0]);
+		printf("shares2[0] : %d\n", share2[0]);
+		printf("Invalid shares\n");
+		return -1;
+	}
+	uint32_t y1[8], y2[8];
+	bitslice(y1, &share1[1]);
+	bitslice(y2, &share2[1]);
+	gf256_add(y1, y2);
+	unbitslice(&share1[1], y1);
+	return 0;
+}
+
+/**
+ * @brief Adds two sets of sss_Keyshares.
+ *
+ * This function takes two arrays of sss_Keyshares and adds them together.
+ * The result is stored in the first array of shares.
+ *
+ * @param shares1 A pointer to the first array of sss_Keyshares. This array will be modified to store the result.
+ * @param shares2 A pointer to the second array of sss_Keyshares.
+ * @param n The number of shares in each array.
+ * @return An integer indicating the success or failure of the operation.
+ */
+int add_Keyshares(sss_Keyshare *shares1, sss_Keyshare *shares2, unsigned char n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		if (add_two_Keyshare(shares1[i], shares2[i]) != 0)
+		{
+			return -1;
+		}
+	}
+	return 0;
 }
